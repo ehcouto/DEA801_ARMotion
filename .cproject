@@ -306,7 +306,7 @@
 								<option id="com.crt.advproject.link.gcc.lto.204454811" name="Enable Link-time optimization (-flto)" superClass="com.crt.advproject.link.gcc.lto"/>
 								<option id="com.crt.advproject.link.gcc.lto.optmization.level.1614604013" name="Link-time optimization level" superClass="com.crt.advproject.link.gcc.lto.optmization.level"/>
 								<option id="com.crt.advproject.link.manage.1223189897" name="Manage linker script" superClass="com.crt.advproject.link.manage" value="true" valueType="boolean"/>
-								<option id="com.crt.advproject.link.script.539065063" name="Linker script" superClass="com.crt.advproject.link.script" value="frdmmcxa166_arcelic_WMframework_Debug.ld" valueType="string"/>
+								<option id="com.crt.advproject.link.script.539065063" name="Linker script" superClass="com.crt.advproject.link.script" value="DAE802framework_Debug.ld" valueType="string"/>
 								<option id="com.crt.advproject.link.scriptdir.2058688824" name="Script path" superClass="com.crt.advproject.link.scriptdir"/>
 								<option id="com.crt.advproject.link.crpenable.2049580633" name="Enable automatic placement of Code Read Protection field in image" superClass="com.crt.advproject.link.crpenable"/>
 								<option id="com.crt.advproject.link.flashconfigenable.2114346192" name="Enable automatic placement of Flash Configuration field in image" superClass="com.crt.advproject.link.flashconfigenable" value="true" valueType="boolean"/>
@@ -323,6 +323,7 @@
 								<option id="com.crt.advproject.link.sgstubenable.1987014506" name="Enable generation of Secure Gateway Import Library" superClass="com.crt.advproject.link.sgstubenable"/>
 								<option id="com.crt.advproject.link.nonsecureobject.1383148962" name="Secure Gateway Import Library" superClass="com.crt.advproject.link.nonsecureobject"/>
 								<option id="com.crt.advproject.link.inimplib.146864425" name="Input Secure Gateway Import Library" superClass="com.crt.advproject.link.inimplib"/>
+								<option id="gnu.c.link.option.group.806858773" superClass="gnu.c.link.option.group"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.linker.input.544058844" superClass="cdt.managedbuild.tool.gnu.c.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -634,7 +635,7 @@
 								<option id="com.crt.advproject.link.gcc.lto.optmization.level.1472649058" name="Link-time optimization level" superClass="com.crt.advproject.link.gcc.lto.optmization.level"/>
 								<option id="com.crt.advproject.link.fpu.1652802152" name="Floating point" superClass="com.crt.advproject.link.fpu" value="com.crt.advproject.link.fpu.fpv5sp.hard" valueType="enumerated"/>
 								<option id="com.crt.advproject.link.manage.1564084224" name="Manage linker script" superClass="com.crt.advproject.link.manage" value="true" valueType="boolean"/>
-								<option id="com.crt.advproject.link.script.472228915" name="Linker script" superClass="com.crt.advproject.link.script" value="frdmmcxa166_arcelic_WMframework_Release.ld" valueType="string"/>
+								<option id="com.crt.advproject.link.script.472228915" name="Linker script" superClass="com.crt.advproject.link.script" value="DAE802framework_Release.ld" valueType="string"/>
 								<option id="com.crt.advproject.link.scriptdir.1039904033" name="Script path" superClass="com.crt.advproject.link.scriptdir"/>
 								<option id="com.crt.advproject.link.crpenable.2076996936" name="Enable automatic placement of Code Read Protection field in image" superClass="com.crt.advproject.link.crpenable"/>
 								<option id="com.crt.advproject.link.flashconfigenable.1870415125" name="Enable automatic placement of Flash Configuration field in image" superClass="com.crt.advproject.link.flashconfigenable" value="true" valueType="boolean"/>
@@ -653,6 +654,7 @@
 								<option id="com.crt.advproject.link.sgstubenable.1668310334" name="Enable generation of Secure Gateway Import Library" superClass="com.crt.advproject.link.sgstubenable"/>
 								<option id="com.crt.advproject.link.nonsecureobject.1192867017" name="Secure Gateway Import Library" superClass="com.crt.advproject.link.nonsecureobject"/>
 								<option id="com.crt.advproject.link.inimplib.2017411930" name="Input Secure Gateway Import Library" superClass="com.crt.advproject.link.inimplib"/>
+								<option id="gnu.c.link.option.group.559247969" superClass="gnu.c.link.option.group"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.linker.input.1657016890" superClass="cdt.managedbuild.tool.gnu.c.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>

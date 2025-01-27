@@ -39,7 +39,7 @@ extern "C" {
 #define FMSTR_POLL_DRIVEN       1   // No interrupt needed, polling only
 
 //! Select communication interface
-#define FMSTR_TRANSPORT         FMSTR_SERIAL  // Select FMSTR_SERIAL, FMSTR_CAN or FMSTR_PDBDM transport interface
+#define FMSTR_TRANSPORT         FMSTR_PDBDM  // Select FMSTR_SERIAL, FMSTR_CAN or FMSTR_PDBDM transport interface
 #define FMSTR_SERIAL_DRV        FMSTR_SERIAL_MCUX_LPUART   // When using FMSTR_SERIAL: select Serial low-level communication driver
 
 //! Define communication interface base address or leave undefined for runtime setting
