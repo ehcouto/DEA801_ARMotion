@@ -13,18 +13,10 @@
  *
  * The CPU macro should be declared in the project or makefile.
  */
-#if (defined(CPU_MCXA166VLH) || defined(CPU_MCXA166VLL) || defined(CPU_MCXA166VLQ) || \
-    defined(CPU_MCXA166VPN))
-
-#define MCXA166_SERIES
-
-/* CMSIS-style register definitions */
+#if (defined(CPU_MCXA166VLH) || defined(CPU_MCXA166VLL) || defined(CPU_MCXA166VLQ) || defined(CPU_MCXA166VPN))
 #include "MCXA166.h"
-/* CPU specific feature definitions */
-#include "MCXA166_features.h"
-
 #else
-    #error "No valid CPU defined!"
+  #error "No valid CPU defined!"
 #endif
 
 #endif /* __FSL_DEVICE_REGISTERS_H__ */

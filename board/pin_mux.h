@@ -571,13 +571,13 @@ void BOARD_InitBootPins(void);
 
 /* Symbols to be used with GPIO driver */
 #define PIN_FB_DIVER_GPIO GPIO1                /*!<@brief GPIO peripheral base pointer */
-#define PIN_FB_DIVER_GPIO_PIN 11U              /*!<@brief GPIO pin number */
-#define PIN_FB_DIVER_GPIO_PIN_MASK (1U << 11U) /*!<@brief GPIO pin mask */
+#define PIN_FB_DIVER_GPIO_PIN 7U              /*!<@brief GPIO pin number */
+#define PIN_FB_DIVER_GPIO_PIN_MASK (1U << 7U) /*!<@brief GPIO pin mask */
 
 /* Symbols to be used with PORT driver */
 #define PIN_FB_DIVER_PORT PORT1                /*!<@brief PORT peripheral base pointer */
-#define PIN_FB_DIVER_PIN 11U                   /*!<@brief PORT pin number */
-#define PIN_FB_DIVER_PIN_MASK (1U << 11U)      /*!<@brief PORT pin mask */
+#define PIN_FB_DIVER_PIN 7U                   /*!<@brief PORT pin number */
+#define PIN_FB_DIVER_PIN_MASK (1U << 7U)      /*!<@brief PORT pin mask */
                                                /* @} */
 
 /*! @name RESET_B (number 8), RESET
@@ -589,13 +589,13 @@ void BOARD_InitBootPins(void);
 
 /* Symbols to be used with GPIO driver */
 #define PIN_FB_HEATER_GPIO GPIO1               /*!<@brief GPIO peripheral base pointer */
-#define PIN_FB_HEATER_GPIO_PIN 9U              /*!<@brief GPIO pin number */
-#define PIN_FB_HEATER_GPIO_PIN_MASK (1U << 9U) /*!<@brief GPIO pin mask */
+#define PIN_FB_HEATER_GPIO_PIN 10U              /*!<@brief GPIO pin number */
+#define PIN_FB_HEATER_GPIO_PIN_MASK (1U << 10U) /*!<@brief GPIO pin mask */
 
 /* Symbols to be used with PORT driver */
 #define PIN_FB_HEATER_PORT PORT1               /*!<@brief PORT peripheral base pointer */
-#define PIN_FB_HEATER_PIN 9U                   /*!<@brief PORT pin number */
-#define PIN_FB_HEATER_PIN_MASK (1U << 9U)      /*!<@brief PORT pin mask */
+#define PIN_FB_HEATER_PIN 10U                   /*!<@brief PORT pin number */
+#define PIN_FB_HEATER_PIN_MASK (1U << 10U)      /*!<@brief PORT pin mask */
                                                /* @} */
 
 /*! @name PORT2_2 (number 16), DAC_OUT

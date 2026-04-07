@@ -1,9 +1,0 @@
-Release Name: RTCESL 4.7
-
-RTCESL 4.7
-    Description: NXP Real Time Control Embedded Software Library. 
-    Author: NXP
-    Format: source code & object code & header files
-    Object code & header files location: each directory 
-    License File: LA_OPT_NXP_Software_License.txt
-    Outgoing License: LA_OPT_NXP_SOFTWARE_License v35 May 2022 - Additional distribution license granted, license in Section 2.3 applies

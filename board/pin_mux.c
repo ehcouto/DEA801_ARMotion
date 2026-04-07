@@ -602,7 +602,7 @@ void BOARD_InitPins(void)
     GPIO_PinInit(PIN_FB_HEATER_GPIO, PIN_FB_HEATER_PIN, &FB_HEATER_config);
 
     gpio_pin_config_t FB_DIVER_config = {
-        .pinDirection = kGPIO_DigitalOutput,
+        .pinDirection = kGPIO_DigitalInput,
         .outputLogic = 0U
     };
     /* Initialize GPIO functionality on pin PIO1_11 (pin 5)  */
@@ -621,14 +621,23 @@ void BOARD_InitPins(void)
     };
     /* Initialize GPIO functionality on pin PIO2_5 (pin 19)  */
     GPIO_PinInit(PIN_PILOT_FAIL_TST_BULK_GPIO, PIN_PILOT_FAIL_TST_BULK_PIN, &PILOT_FAIL_TST_BULK_config);
-
+/*
     gpio_pin_config_t PILOT_SYN_MOTOR_config = {
         .pinDirection = kGPIO_DigitalOutput,
         .outputLogic = 0U
     };
-    /* Initialize GPIO functionality on pin PIO3_7 (pin 43)  */
-    GPIO_PinInit(PIN_PILOT_SYN_MOTOR_GPIO, PIN_PILOT_SYN_MOTOR_PIN, &PILOT_SYN_MOTOR_config);
 
+    GPIO_PinInit(PIN_PILOT_SYN_MOTOR_GPIO, PIN_PILOT_SYN_MOTOR_PIN, &PILOT_SYN_MOTOR_config);
+*/
+
+/*
+    gpio_pin_config_t PILOT_SYN_MOTOR_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+
+    GPIO_PinInit(PIN_PILOT_SYN_MOTOR_GPIO, PIN_PILOT_SYN_MOTOR_PIN, &PILOT_SYN_MOTOR_config);
+*/
     gpio_pin_config_t PILOT_EV_REGEN_config = {
         .pinDirection = kGPIO_DigitalOutput,
         .outputLogic = 0U
@@ -745,10 +754,10 @@ void BOARD_InitPins(void)
                      /* Input Buffer Enable: Enables. */
                      | PORT_PCR_IBE(PCR_IBE_ibe1));
 
-    /* PORT1_11 (pin 5) is configured as P1_11 */
+    /* PORT1_7 (pin 1) is configured as P1_7 */
     PORT_SetPinMux(PIN_FB_DIVER_PORT, PIN_FB_DIVER_PIN, kPORT_MuxAlt0);
 
-    PORT1->PCR[11] = ((PORT1->PCR[11] &
+    PORT1->PCR[7] = ((PORT1->PCR[7] &
                        /* Mask bits to zero which are setting */
                        (~(PORT_PCR_IBE_MASK)))
 
@@ -795,10 +804,10 @@ void BOARD_InitPins(void)
                       /* Input Buffer Enable: Disables. */
                       | PORT_PCR_IBE(PCR_IBE_ibe0));
 
-    /* PORT1_9 (pin 3) is configured as P1_9 */
+    /* PORT1_10 (pin 4) is configured as P1_10 */
     PORT_SetPinMux(PIN_FB_HEATER_PORT, PIN_FB_HEATER_PIN, kPORT_MuxAlt0);
 
-    PORT1->PCR[9] = ((PORT1->PCR[9] &
+    PORT1->PCR[10] = ((PORT1->PCR[10] &
                       /* Mask bits to zero which are setting */
                       (~(PORT_PCR_IBE_MASK)))
 
@@ -1056,14 +1065,16 @@ void BOARD_InitPins(void)
                       | PORT_PCR_IBE(PCR_IBE_ibe0));
 
     /* PORT3_7 (pin 43) is configured as P3_7 */
+
     PORT_SetPinMux(PIN_PILOT_SYN_MOTOR_PORT, PIN_PILOT_SYN_MOTOR_PIN, kPORT_MuxAlt0);
 
     PORT3->PCR[7] = ((PORT3->PCR[7] &
-                      /* Mask bits to zero which are setting */
+
                       (~(PORT_PCR_IBE_MASK)))
 
-                     /* Input Buffer Enable: Enables. */
+
                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
 
     /* PORT3_8 (pin 42) is configured as PWM0_A1 */
     PORT_SetPinMux(PIN_PWM_V_H_PORT, PIN_PWM_V_H_PIN, kPORT_MuxAlt5);

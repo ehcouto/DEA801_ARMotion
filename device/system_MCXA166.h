@@ -10,9 +10,9 @@
 **                          Keil ARM C/C++ Compiler
 **                          MCUXpresso Compiler
 **
-**     Reference manual:    MCXAP144M180FS6_RM_Rev.1_DraftC
-**     Version:             rev. 1.0, 2024-03-26
-**     Build:               b240905
+**     Reference manual:    MCXAP144M180FS6_RM_Rev.1
+**     Version:             rev. 1.0, 2024-11-21
+**     Build:               b250206
 **
 **     Abstract:
 **         Provides a system configuration function and a global variable that
@@ -20,15 +20,15 @@
 **         the oscillator (PLL) that is part of the microcontroller device.
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2016-2024 NXP
+**     Copyright 2016-2025 NXP
 **     SPDX-License-Identifier: BSD-3-Clause
 **
 **     http:                 www.nxp.com
 **     mail:                 support@nxp.com
 **
 **     Revisions:
-**     - rev. 1.0 (2024-03-26)
-**         Initial version based on Rev1 DraftC RM
+**     - rev. 1.0 (2024-11-21)
+**         Initial version based on Rev1 RM
 **
 ** ###################################################################
 */
@@ -36,7 +36,7 @@
 /*!
  * @file MCXA166
  * @version 1.0
- * @date 2024-03-26
+ * @date 2024-11-21
  * @brief Device specific configuration file for MCXA166 (header file)
  *
  * Provides a system configuration function and a global variable that contains

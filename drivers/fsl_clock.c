@@ -596,7 +596,7 @@ static uint32_t CLOCK_GetFroHfFreq(void)
  */
 static uint32_t CLOCK_GetFroHfDivFreq(void)
 {
-    return CLOCK_GetFroHfFreq() / ((SYSCON->FROHFDIV & 0xfU) + 1U);
+    return CLOCK_GetFroHfFreq() / ((SYSCON->FROHFDIV & SYSCON_FROHFDIV_DIV_MASK) + 1U);
 }
 
 /* Get LF FRO DIV Clk */
@@ -605,7 +605,7 @@ static uint32_t CLOCK_GetFroHfDivFreq(void)
  */
 static uint32_t CLOCK_GetFroLfDivFreq(void)
 {
-    return CLOCK_GetFro12MFreq() / ((SYSCON->FROLFDIV & 0xfU) + 1U);
+    return CLOCK_GetFro12MFreq() / ((SYSCON->FROLFDIV & SYSCON_FROLFDIV_DIV_MASK) + 1U);
 }
 
 /* Get CLK_45M frequency */
@@ -655,7 +655,7 @@ static uint32_t CLOCK_GetExtClkFreq(void)
 /* Get Pll1ClkDiv */
 uint32_t CLOCK_GetPll1ClkDivFreq(void)
 {
-    return CLOCK_GetPll1ClkFreq() / ((SYSCON->PLL1CLKDIV & 0xfU) + 1U);
+    return CLOCK_GetPll1ClkFreq() / ((SYSCON->PLL1CLKDIV & SYSCON_PLL1CLKDIV_DIV_MASK) + 1U);
 }
 
 /* Get MAIN Clk */
@@ -696,7 +696,7 @@ uint32_t CLOCK_GetMainClk(void)
  */
 uint32_t CLOCK_GetCoreSysClkFreq(void)
 {
-    return CLOCK_GetMainClk() / ((SYSCON->AHBCLKDIV & 0xFFU) + 1U);
+    return CLOCK_GetMainClk() / ((SYSCON->AHBCLKDIV & SYSCON_AHBCLKDIV_DIV_MASK) + 1U);
 }
 
 /* Get I3C Clk */
@@ -1058,8 +1058,8 @@ uint32_t CLOCK_GetAdcClkFreq(uint32_t id)
 {
     uint32_t freq = 0U;
 
-    uint32_t clksel = MRCC0->MRCC_ADC0_CLKSEL;
-    uint32_t clkdiv = MRCC0->MRCC_ADC0_CLKDIV;
+    uint32_t clksel = MRCC0->MRCC_ADC_CLKSEL;
+    uint32_t clkdiv = MRCC0->MRCC_ADC_CLKDIV;
 
     if (true == CLOCK_IsDivHalt(clkdiv))
     {
@@ -1462,14 +1462,24 @@ status_t CLOCK_FRO12MTrimConfig(sirc_trim_config_t config)
 
     if (kSCG_SircTrimNonUpdate == config.trimMode)
     {
-        SCG0->SIRCSTAT = SCG_SIRCSTAT_CCOTRIM(config.cltrim);
-        SCG0->SIRCSTAT = SCG_SIRCSTAT_CCOTRIM(config.ccotrim);
+        SCG0->SIRCSTAT = (SCG0->SIRCSTAT & ~SCG_SIRCSTAT_CLTRIM_MASK) | SCG_SIRCSTAT_CLTRIM(config.cltrim);
+        SCG0->SIRCSTAT = (SCG0->SIRCSTAT & ~SCG_SIRCSTAT_CCOTRIM_MASK) | SCG_SIRCSTAT_CCOTRIM(config.ccotrim);
     }
 
     /* Set trim mode. */
-    SCG0->SIRCCSR = (uint32_t)config.trimMode;
+    SCG0->SIRCCSR = (SCG0->SIRCCSR & ~(SCG_SIRCCSR_SIRCTREN_MASK | SCG_SIRCCSR_SIRCTRUP_MASK)) | (uint32_t)config.trimMode;
+
+    if ((SCG0->SIRCCSR & SCG_SIRCCSR_SIRCVLD_MASK) == 0U)
+    {
+        return (status_t)kStatus_Fail;
+    }
 
     if ((SCG0->SIRCCSR & SCG_SIRCCSR_SIRCERR_MASK) == SCG_SIRCCSR_SIRCERR_MASK)
+    {
+        return (status_t)kStatus_Fail;
+    }
+
+    if ((SCG0->SIRCCSR & SCG_SIRCCSR_TRIM_LOCK_MASK) == 0U)
     {
         return (status_t)kStatus_Fail;
     }

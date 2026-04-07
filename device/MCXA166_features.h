@@ -1,13 +1,13 @@
 /*
 ** ###################################################################
 **     Version:             rev. 1.0, 2024-03-26
-**     Build:               b240905
+**     Build:               b250218
 **
 **     Abstract:
 **         Chip specific module features.
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2016-2024 NXP
+**     Copyright 2016-2025 NXP
 **     SPDX-License-Identifier: BSD-3-Clause
 **
 **     http:                 www.nxp.com
@@ -116,6 +116,8 @@
 #define FSL_FEATURE_LPADC_HAS_CTRL_CAL_REQ (1)
 /* @brief Has calibration average (bitfield CTRL[CAL_AVGS]). */
 #define FSL_FEATURE_LPADC_HAS_CTRL_CAL_AVGS (1)
+/* @brief Has High Speed Mode Trim Request (bitfield CTRL[CALHS]). */
+#define FSL_FEATURE_LPADC_HAS_CTRL_CALHS (1)
 /* @brief Has internal clock (bitfield CFG[ADCKEN]). */
 #define FSL_FEATURE_LPADC_HAS_CFG_ADCKEN (0)
 /* @brief Enable support for low voltage reference on option 1 reference (bitfield CFG[VREF1RNG]). */
@@ -230,6 +232,8 @@
 #define FSL_FEATURE_FLEXCAN_HAS_ENHANCED_RX_FIFO_FILTER_MAX_NUMBER (32)
 /* @brief Does not support Supervisor Mode (bitfield MCR[SUPV]. */
 #define FSL_FEATURE_FLEXCAN_HAS_NO_SUPV_SUPPORT (0)
+/* @brief Support payload endianness selection (bitfield CTRL2[PES]). */
+#define FSL_FEATURE_FLEXCAN_HAS_ENDIANNESS_SELECTION (1)
 
 /* CDOG module features */
 
@@ -259,8 +263,10 @@
 #define FSL_FEATURE_LPCMP_HAS_ROUNDROBIN_MODE (1)
 /* @brief Has window mode (related to existence of CCR1.WINDOW_CLS). */
 #define FSL_FEATURE_LPCMP_HAS_WINDOW_CONTROL (1)
-/* @brief Has no CCR0 CMP_STOP_EN bitfield. */
-#define FSL_FEATURE_LPCMP_HAS_NO_CCR0_CMP_STOP_EN (0)
+/* @brief Has CCR0 CMP_STOP_EN bitfield. */
+#define FSL_FEATURE_LPCMP_HAS_CCR0_CMP_STOP_EN (1)
+/* @brief CMP instance support CCR0 CMP_STOP_EN bitfield. */
+#define FSL_FEATURE_LPCMP_INSTANCE_SUPPORT_CCR0_CMP_STOP_ENn(x) (1)
 
 /* CTIMER module features */
 
@@ -458,6 +464,8 @@
 
 /* @brief Has separate DMA RX and TX requests. */
 #define FSL_FEATURE_LPI2C_HAS_SEPARATE_DMA_RX_TX_REQn(x) (1)
+/* @brief Has dedicated interrupt for master and slave. */
+#define FSL_FEATURE_LPI2C_HAS_ROLE_SPLIT_IRQ (0)
 /* @brief Capacity (number of entries) of the transmit/receive FIFO (or zero if no FIFO is available). */
 #define FSL_FEATURE_LPI2C_FIFO_SIZEn(x) (4)
 
@@ -563,6 +571,8 @@
 #define FSL_FEATURE_LPUART_HAS_HDCR (0)
 /* @brief Has register Timeout. */
 #define FSL_FEATURE_LPUART_HAS_TIMEOUT (0)
+/* @brief UART support swap TX and RX (has bit CTRL[SWAP]). */
+#define FSL_FEATURE_LPUART_HAS_CTRL_SWAP (1)
 
 /* TRDC module features */
 
@@ -653,28 +663,10 @@
 
 /* RTC module features */
 
-/* @brief Has Tamper Direction Register support. */
-#define FSL_FEATURE_RTC_HAS_TAMPER_DIRECTION (0)
-/* @brief Has Tamper Queue Status and Control Register support. */
-#define FSL_FEATURE_RTC_HAS_TAMPER_QUEUE (0)
-/* @brief Has RTC Tamper 23 Filter Configuration Register support. */
-#define FSL_FEATURE_RTC_HAS_FILTER23_CFG (0)
-/* @brief Has WAKEUP_MODE bitfile in CTRL2 register. */
-#define FSL_FEATURE_RTC_HAS_NO_CTRL2_WAKEUP_MODE (1)
-/* @brief Has CLK_SEL bitfile in CTRL register. */
-#define FSL_FEATURE_RTC_HAS_CLOCK_SELECT (0)
-/* @brief Has CLKO_DIS bitfile in CTRL register. */
-#define FSL_FEATURE_RTC_HAS_CLOCK_OUTPUT_DISABLE (0)
-/* @brief Has No Tamper in RTC. */
-#define FSL_FEATURE_RTC_HAS_NO_TAMPER_FEATURE (1)
-/* @brief Has CPU_LOW_VOLT bitfile in STATUS register. */
-#define FSL_FEATURE_RTC_HAS_NO_CPU_LOW_VOLT_FLAG (1)
-/* @brief Has RST_SRC bitfile in STATUS register. */
-#define FSL_FEATURE_RTC_HAS_NO_RST_SRC_FLAG (1)
-/* @brief Has GP_DATA_REG register. */
-#define FSL_FEATURE_RTC_HAS_NO_GP_DATA_REG (1)
-/* @brief Has TIMER_STB_MASK bitfile in CTRL register. */
-#define FSL_FEATURE_RTC_HAS_NO_TIMER_STB_MASK (1)
+/* @brief Has no supervisor access bit (CR). */
+#define FSL_FEATURE_RTC_HAS_NO_CR_SUP (1)
+/* @brief Has no oscillator enable bit (CR). */
+#define FSL_FEATURE_RTC_HAS_NO_CR_OSCE (1)
 
 /* SPC module features */
 
@@ -716,7 +708,7 @@
 /* @brief Flash sector size in bytes */
 #define FSL_FEATURE_SYSCON_FLASH_SECTOR_SIZE_BYTES (8192)
 /* @brief Flash size in bytes */
-#define FSL_FEATURE_SYSCON_FLASH_SIZE_BYTES (1048576)
+#define FSL_FEATURE_SYSCON_FLASH_SIZE_BYTES (1040384)
 /* @brief Support ROMAPI */
 #define FSL_FEATURE_SYSCON_ROMAPI (1)
 /* @brief ROMAPI tree address */
