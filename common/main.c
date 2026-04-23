@@ -13,10 +13,10 @@ void main(void)
 
 
 	    osHandlerML();
-	    FMSTR_Poll();
+	    //FMSTR_Poll();
 
-    	FsRuntimeClockTest();
-    	FsCpuBackgroundTest();
+    	//FsRuntimeClockTest();
+    	//FsCpuBackgroundTest();
 
 
 
