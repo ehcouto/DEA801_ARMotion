@@ -1,0 +1,27 @@
+30.04.2025
+Sıcaklık okumasına IIR filtre ekleyince veri gelmedi. Düzeltilmeli.
+
+02.05.2025
+Diverter kontrol kodu, UART protokolüne göre yeniden düzenlenmelidir.
+UART hata kodları yazılacak.
+
+06.05.2025
+Buffer Size'lar 2 eksiltilince bir şeyler olmaya başladı
+
+07.05.2025
+UART haberleşmesi yapıldı. Protokole göre uygulama kodu yazılacak. Diverter pin okumasına bak.
+
+13.05.2025
+* DrainWorkTime sorunu çözülecek. Hata kodu olarak eklenecek.
+* Kısa devre koruması IPM Fault'a eklenecek. 
+-> IPMFaultHandled_M1 olarak eklendi, test edilmelidir.
+Drain motoru korumaları test edilecek.
+* Fault byte'ı 4 byte yapılacak.
+-> 4 Byte yapıldı. 
+
+15.05.2025
+* Heater Feedback ACU'ya gönderilmeli midir?
+
+16.05.2025
+* Diverter konnektöründeki Lıve pini yerine neutral'den kablo çek
+-> Devre patladı, eski diverter sisteminden devam.

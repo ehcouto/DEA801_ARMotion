@@ -1,0 +1,4 @@
+.settings/language.settings.xml
+.settings/org.eclipse.core.resources.prefs
+/Debug/
+*.launch
