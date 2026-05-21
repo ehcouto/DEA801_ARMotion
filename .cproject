@@ -251,18 +251,18 @@
 								<option id="gnu.both.asm.option.flags.crt.78916881" name="Assembler flags" superClass="gnu.both.asm.option.flags.crt" value="-c -x assembler-with-cpp -D__REDLIB__" valueType="string"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.both.asm.option.include.paths.1668767693" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/DEA 802_ARMotion/safety_iec60730b}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/DEA 802_ARMotion/safety_iec60730b/safety}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/DEA 802_ARMotion/safety_iec60730b/safety/aio}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/DEA 802_ARMotion/safety_iec60730b/safety/clock}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/DEA 802_ARMotion/safety_iec60730b/safety/dio}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/DEA 802_ARMotion/safety_iec60730b/safety/flash}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/DEA 802_ARMotion/safety_iec60730b/safety/programCounter}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/DEA 802_ARMotion/safety_iec60730b/safety/ram}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/DEA 802_ARMotion/safety_iec60730b/safety/register}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/DEA 802_ARMotion/safety_iec60730b/safety/stack}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/DEA 802_ARMotion/safety_iec60730b/safety/wdog}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/DEA 802_ARMotion/safety_iec60730b/safety/tsi}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/safety_iec60730b}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/safety_iec60730b/safety}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/safety_iec60730b/safety/aio}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/safety_iec60730b/safety/clock}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/safety_iec60730b/safety/dio}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/safety_iec60730b/safety/flash}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/safety_iec60730b/safety/programCounter}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/safety_iec60730b/safety/ram}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/safety_iec60730b/safety/register}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/safety_iec60730b/safety/stack}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/safety_iec60730b/safety/wdog}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/safety_iec60730b/safety/tsi}&quot;"/>
 								</option>
 								<option id="gnu.both.asm.option.warnings.nowarn.390474423" name="Suppress warnings (-W)" superClass="gnu.both.asm.option.warnings.nowarn"/>
 								<option id="gnu.both.asm.option.version.2024030192" name="Announce version (-v)" superClass="gnu.both.asm.option.version"/>
@@ -698,7 +698,7 @@
 								<option id="com.crt.advproject.link.gcc.lto.optmization.level.1472649058" name="Link-time optimization level" superClass="com.crt.advproject.link.gcc.lto.optmization.level"/>
 								<option id="com.crt.advproject.link.fpu.1652802152" name="Floating point" superClass="com.crt.advproject.link.fpu" value="com.crt.advproject.link.fpu.fpv5sp.hard" valueType="enumerated"/>
 								<option id="com.crt.advproject.link.manage.1564084224" name="Manage linker script" superClass="com.crt.advproject.link.manage" value="true" valueType="boolean"/>
-								<option id="com.crt.advproject.link.script.472228915" name="Linker script" superClass="com.crt.advproject.link.script" value="DEA801_G02_V01_12_00_Release.ld" valueType="string"/>
+								<option id="com.crt.advproject.link.script.472228915" name="Linker script" superClass="com.crt.advproject.link.script" value="DEA801_G03_V01_20_00_Release.ld" valueType="string"/>
 								<option id="com.crt.advproject.link.scriptdir.1039904033" name="Script path" superClass="com.crt.advproject.link.scriptdir"/>
 								<option id="com.crt.advproject.link.crpenable.2076996936" name="Enable automatic placement of Code Read Protection field in image" superClass="com.crt.advproject.link.crpenable"/>
 								<option id="com.crt.advproject.link.flashconfigenable.1870415125" name="Enable automatic placement of Flash Configuration field in image" superClass="com.crt.advproject.link.flashconfigenable" value="true" valueType="boolean"/>
