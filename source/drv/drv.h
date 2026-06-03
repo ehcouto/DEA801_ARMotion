@@ -20,7 +20,7 @@
 
 #define ADC_STEP					 0.0001007080078125f
 #define CURRENT_AMP 				 1.36363636f
-#define VOLTAGE_AMP				     0.007543f
+#define VOLTAGE_AMP				     0.007430f
 #define VOLTAGE_AMP_3V3				 0.5f
 
 #define RX_BUFFER_SIZE 12
