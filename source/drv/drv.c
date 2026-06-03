@@ -17,6 +17,12 @@
 uint32_t ui32SysticIsrCnt;
 uint32_t ui32NoInit FS_NOINIT_RAM_LOC;
 
+uint8_t drvMotorPhase_M1;
+
+#define NORMAL       0U
+#define REVERSED     1U
+
+
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -281,6 +287,7 @@ void drvInitMcu(void (*_McFuncFastLoop)(int32_t MxIndex),
 		torqueDrain[i] = 0.0f;
 	}
 
+	drvMotorPhase_M1 = NORMAL;
 }
 
 
@@ -404,9 +411,18 @@ void drvPwmEnablePhaseUVW_M2(void)
 
 void drvSetPwmDuties(float dutyU, float dutyV, float dutyW)
 {
-	u2_count_u = (uint16_t)(32768 * (1 - dutyU));
-    u2_count_v = (uint16_t)(32768 * (1 - dutyV));
-    u2_count_w = (uint16_t)(32768 * (1 - dutyW));
+	if(drvMotorPhase_M1 == NORMAL)
+	{
+		u2_count_u = (uint16_t)(32768 * (1 - dutyU));
+	    u2_count_v = (uint16_t)(32768 * (1 - dutyV));
+	    u2_count_w = (uint16_t)(32768 * (1 - dutyW));
+	}
+	else if(drvMotorPhase_M1 == REVERSED)
+	{
+		u2_count_u = (uint16_t)(32768 * (1 - dutyW));
+	    u2_count_v = (uint16_t)(32768 * (1 - dutyV));
+	    u2_count_w = (uint16_t)(32768 * (1 - dutyU));
+	}
 
     if(u2_count_u > 31130.0f)
     	u2_count_u = 31130;
@@ -621,10 +637,26 @@ void M2_AdcGetConvVal( r_mtr_adc_tb *mtr_ad_data )
 
 void drvSampleAdcChannels(uint8_t sec)
 {
+    /* Motor Phase Sequence */
+    /* Wash Pump for Leo */
+	if((mcv_rx.selectComponent >> CIRC_TYPE_BIT_FIELD) == CIRC_W11652801_BITMASK)
+	{
+		drvMotorPhase_M1 = REVERSED; //Invert the Phase Sequence for this Pump...
+	}
+
 	//M1_AdcGetConvVal(&mtr_ad_data_M1);
-	adcUb = mtr_ad_data_M1.u2_iu_ad;
-	adcVa = mtr_ad_data_M1.u2_iv_ad;
-	adcWa = mtr_ad_data_M1.u2_iw_ad;
+	if(drvMotorPhase_M1 == NORMAL)
+	{
+		adcUb = mtr_ad_data_M1.u2_iu_ad;
+		adcVa = mtr_ad_data_M1.u2_iv_ad;
+		adcWa = mtr_ad_data_M1.u2_iw_ad;
+	}
+	else if(drvMotorPhase_M1 == REVERSED)
+	{
+		adcUb = mtr_ad_data_M1.u2_iw_ad;
+		adcVa = mtr_ad_data_M1.u2_iv_ad;
+		adcWa = mtr_ad_data_M1.u2_iu_ad;
+	}
 	adcDcBusVoltage = sAdcRes.i16Vbus2/VOLTAGE_AMP*ADC_STEP;
     adcTempIPM_M1 = mtr_ad_data_M1.u2_tempIPM_ad;
 
