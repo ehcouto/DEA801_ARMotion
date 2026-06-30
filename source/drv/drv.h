@@ -107,6 +107,7 @@ void drvWatchdogDisable(void);
 void drvWatchdogEnable(void);
 void drvWatchdogResetHandlerFL(void);
 void drvResetWdg(void);
+void drvUart_Reset(void);
 
 extern void (*drvHighFreqHandlerMx)(int32_t MxIndex);
 extern void (*drvLowFreqHandlerMx)(int32_t MxIndex);

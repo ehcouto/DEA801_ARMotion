@@ -14,8 +14,13 @@
 #include "core_cm33.h"
 #include "safety_cm33_mcx.h"
 
+static void Uart_Status_Check(uint32_t status);
+
 uint32_t ui32SysticIsrCnt;
 uint32_t ui32NoInit FS_NOINIT_RAM_LOC;
+
+volatile uint8_t Rx_Data_In;
+volatile uint8_t preambleDetect;
 
 uint8_t drvMotorPhase_M1;
 
@@ -215,6 +220,7 @@ void drvInitMcu(void (*_McFuncFastLoop)(int32_t MxIndex),
 	ui16Modulo = PWM_MODULO;
 	BOARD_InitPins();
 
+	/*
     //WD_REFRESH;
     FsAfterResetVarInit();
 
@@ -235,6 +241,7 @@ void drvInitMcu(void (*_McFuncFastLoop)(int32_t MxIndex),
     WD_REFRESH;
 
     FsFlashTestRtInit();
+*/
 
 
     InitADC0();
@@ -940,11 +947,13 @@ void ADC0_IRQHandler(void) //68us
     /* Clear fault flags */
     //PWMBase->FSTS = (PWMBase->FSTS & ~PWM_FSTS_FFLAG_MASK) | PWM_FSTS_FFLAG(0xF);
 
+	/*
     uartPri=NVIC_GetPriority(LPUART4_IRQn);
     adcPri=NVIC_GetPriority(ADC0_IRQn);
     gpioPri=NVIC_GetPriority(GPIO0_IRQn);
     ctimerPri=NVIC_GetPriority(CTIMER0_IRQn);
     systickPri=NVIC_GetPriority(SysTick_IRQn);
+	 */
 
 
 
@@ -1030,13 +1039,13 @@ void ctimer_match0_callback(uint32_t flags) //35us
     appDrainTimer(&appDw);
 
 	ui32SysticIsrCnt++;
+	/*
 	FsRuntimeClockUpdate();
 	FsFlashTestRt();
 	WD_REFRESH;
-    /* Safety tests which cannot be interrupted */
 	FsIsrTests();
 	WD_REFRESH;
-
+	*/
 }
 
 // 1ms Timer (SysTick)
@@ -1085,32 +1094,25 @@ void SysTick_Handler(void) //15us
 
 }
 
-volatile uint8_t temp=0;
-volatile uint8_t preambleDetect=0;
 
 void LPUART4_IRQHandler()  //4us
 {
-
     uint32_t status = LPUART_GetStatusFlags(LPUART4);
 
-    if (status & kLPUART_RxOverrunFlag)
-        {
-            LPUART_ClearStatusFlags(LPUART4, kLPUART_RxOverrunFlag);
-            mcv_rx.rxIndex = 0;
-            preambleDetect = 0;
-        }
+    //Check Error Flags
+    Uart_Status_Check(status);
 
-    if (status & kLPUART_RxDataRegFullFlag) {
-
-
-    	temp = LPUART_ReadByte(LPUART4);
+    //RX Interruption
+    if (status & kLPUART_RxDataRegFullFlag)
+    {
+    	Rx_Data_In = LPUART_ReadByte(LPUART4);
 
     	if(preambleDetect == 0) // preamble byte will be searched.
 		{
-    		if(temp == 0x55) // if the byte is preamble byte
+    		if(Rx_Data_In == 0x55) // if the byte is preamble byte
 			{
 				mcv_rx.rxIndex = 0;
-				rxBuffer[mcv_rx.rxIndex++] = temp;
+				rxBuffer[mcv_rx.rxIndex++] = Rx_Data_In;
 				preambleDetect = 1;
 			}
 		}
@@ -1118,9 +1120,8 @@ void LPUART4_IRQHandler()  //4us
 		{
 			if (mcv_rx.rxIndex < RX_BUFFER_SIZE)
 			{
-                rxBuffer[mcv_rx.rxIndex++] = temp;
-                appDw.v.appVarDwUART.faultCntr = 0;
-
+                rxBuffer[mcv_rx.rxIndex++] = Rx_Data_In;
+                appDw.v.appVarDwUART.faultRXCntr = 0;
 			}
 
 			if(mcv_rx.rxIndex >= (RX_BUFFER_SIZE))
@@ -1131,17 +1132,63 @@ void LPUART4_IRQHandler()  //4us
 		}
     }
 
-    if ((status & kLPUART_TxDataRegEmptyFlag)
-    		&& (LPUART_GetEnabledInterrupts(LPUART4) & kLPUART_TxDataRegEmptyInterruptEnable))
+    //TX Interruption
+    if ((status & kLPUART_TxDataRegEmptyFlag) &&
+    	(LPUART_GetEnabledInterrupts(LPUART4) & kLPUART_TxDataRegEmptyInterruptEnable))
+    {
+        if (txIndex < TX_BUFFER_SIZE)
         {
-            if (txIndex < TX_BUFFER_SIZE)
-            {
-                LPUART_WriteByte(LPUART4, txBuffer[txIndex++]);
-            }
-            else
-            {
-                LPUART_DisableInterrupts(LPUART4, kLPUART_TxDataRegEmptyInterruptEnable);
-            }
+            LPUART_WriteByte(LPUART4, txBuffer[txIndex++]);
+            appDw.v.appVarDwUART.faultTXCntr = 0;
         }
+        else
+        {
+            LPUART_DisableInterrupts(LPUART4, kLPUART_TxDataRegEmptyInterruptEnable);
+        }
+    }
+}
 
+
+
+
+void Uart_Status_Check(uint32_t status)
+{
+	//Flags shall be cleared to avoid potential peripheral issues.
+
+	// Overrun RX
+    if (status & kLPUART_RxOverrunFlag)
+    {
+        LPUART_ClearStatusFlags(LPUART4, kLPUART_RxOverrunFlag);
+        mcv_rx.rxIndex = 0;
+        preambleDetect = 0;
+    }
+
+    // Framing Error on receiving data
+    if (status & kLPUART_FramingErrorFlag)
+    {
+        LPUART_ClearStatusFlags(LPUART4, kLPUART_FramingErrorFlag);
+    }
+
+    // Noise Error RX
+    if (status & kLPUART_NoiseErrorFlag)
+    {
+        LPUART_ClearStatusFlags(LPUART4, kLPUART_NoiseErrorFlag);
+    }
+
+    // Parity Error on receiving data
+    if (status & kLPUART_ParityErrorFlag)
+    {
+        LPUART_ClearStatusFlags(LPUART4, kLPUART_ParityErrorFlag);
+    }
+}
+
+
+
+
+void drvUart_Reset(void)
+{
+	preambleDetect = 0;
+	Rx_Data_In = 0;
+	memset(rxBuffer,0,sizeof(rxBuffer));
+	memset(txBuffer,0,sizeof(txBuffer));
 }

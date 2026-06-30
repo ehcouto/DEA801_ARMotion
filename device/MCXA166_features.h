@@ -520,7 +520,7 @@
 /* @brief If 10-bit mode is supported. */
 #define FSL_FEATURE_LPUART_HAS_10BIT_DATA_SUPPORT (1)
 /* @brief If 7-bit mode is supported. */
-#define FSL_FEATURE_LPUART_HAS_7BIT_DATA_SUPPORT (1)
+#define FSL_FEATURE_LPUART_HAS_7BIT_DATA_SUPPORT (0)
 /* @brief Baud rate fine adjustment is available. */
 #define FSL_FEATURE_LPUART_HAS_BAUD_RATE_FINE_ADJUST_SUPPORT (0)
 /* @brief Baud rate oversampling is available (has bit fields C4[OSR], C5[BOTHEDGE], C5[RESYNCDIS] or BAUD[OSR], BAUD[BOTHEDGE], BAUD[RESYNCDIS] if the registers are 32-bit wide). */
@@ -536,7 +536,7 @@
 /* @brief Supports two match addresses to filter incoming frames. */
 #define FSL_FEATURE_LPUART_HAS_ADDRESS_MATCHING (1)
 /* @brief Has transmitter/receiver DMA enable bits C5[TDMAE]/C5[RDMAE] (or BAUD[TDMAE]/BAUD[RDMAE] if the registers are 32-bit wide). */
-#define FSL_FEATURE_LPUART_HAS_DMA_ENABLE (1)
+#define FSL_FEATURE_LPUART_HAS_DMA_ENABLE (0)
 /* @brief Has transmitter/receiver DMA select bits C4[TDMAS]/C4[RDMAS], resp. C5[TDMAS]/C5[RDMAS] if IS_SCI = 0. */
 #define FSL_FEATURE_LPUART_HAS_DMA_SELECT (0)
 /* @brief Data character bit order selection is supported (bit field S2[MSBF] or STAT[MSBF] if the registers are 32-bit wide). */

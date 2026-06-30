@@ -45,6 +45,8 @@ void appUARTInit(void)
 	{
 		mcv_tx.torqueVal[i] = 0;
 	}
+
+	drvUart_Reset();
 }
 
 app_bool_t appIsStateFault(appDw_t* p_appDw)
@@ -68,6 +70,9 @@ app_bool_t appIsStateFault(appDw_t* p_appDw)
 
 void appUARTHandler(appDw_t* p_appDw)
 {
+	uint32_t fault = 0;
+
+	//Load TX Buffer
 	if (mcv_tx.txReady)
 	{
 		mcv_tx.txReady = false;
@@ -107,16 +112,22 @@ void appUARTHandler(appDw_t* p_appDw)
 		p_appDw->v.fsDrainFaultFlag = (app_bool_t)mcIsStateFault(DRAIN);
 		p_appDw->v.appFaultFlag = (app_bool_t)appIsStateFault(p_appDw);
 
-		if(!p_appDw->v.fsCircFaultFlag && !p_appDw->v.fsDrainFaultFlag
-				&& !p_appDw->v.appFaultFlag)
-			mcv_tx.faultTx = 0x0U;
-		else if(p_appDw->v.fsCircFaultFlag)
-			mcv_tx.faultTx = mcGetGeneratedFaultsBinary(CIRCULATION);
-		else if(p_appDw->v.fsDrainFaultFlag)
-			mcv_tx.faultTx = mcGetGeneratedFaultsBinary(DRAIN);
-		else if(p_appDw->v.appFaultFlag)
-			mcv_tx.faultTx = p_appDw->v.generatedFaultsBinary;
+		if((p_appDw->v.fsCircFaultFlag) &&
+		   (p_appDw->v.activeState == CIRCULATION))
+		{
+			fault |= mcGetGeneratedFaultsBinary(CIRCULATION);
+		}
+		if((p_appDw->v.fsDrainFaultFlag) &&
+		   (p_appDw->v.activeState == DRAIN))
+		{
+			fault |= mcGetGeneratedFaultsBinary(DRAIN);
+		}
+		if(p_appDw->v.appFaultFlag)
+		{
+			fault |= p_appDw->v.generatedFaultsBinary;
+		}
 
+		mcv_tx.faultTx = fault;
 
 		mcv_tx.diverterFbTx = p_appDw->v.appVarDwDiverter.divPosRealTx;
 
@@ -164,33 +175,31 @@ void appUARTHandler(appDw_t* p_appDw)
 
 		txIndex = 0;
 		LPUART_EnableInterrupts(LPUART4, kLPUART_TxDataRegEmptyInterruptEnable);
-
-
 	}
 
+	//Receive RX buffer
 	if (mcv_rx.rxComplete)
 	{
-
-		mcv_rx.preambleByteRx = rxBuffer[0];
-		mcv_rx.commandDiverter = rxBuffer[1];
-		mcv_rx.pilotValvesRx = rxBuffer[2];
-		mcv_rx.spRefCirc = (rxBuffer[4]<<8) | (rxBuffer[3]);
-		mcv_rx.spRefDrain = (rxBuffer[6]<<8) | (rxBuffer[5]);
-		mcv_rx.selectComponent = rxBuffer[7];
-		mcv_rx.heaterFirstCfg = rxBuffer[8];
-		mcv_rx.rsvByte1 = rxBuffer[9];
-		mcv_rx.rsvByte2 = rxBuffer[10];
 		mcv_rx.receivedCRCRx = rxBuffer[11];
-
 		mcv_rx.CRCRx = appCalcCRC(rxBuffer,(RX_BUFFER_SIZE-1)*sizeof(uint8_t));
+
+		if(mcv_rx.receivedCRCRx == mcv_rx.CRCRx)
+		{
+			mcv_rx.preambleByteRx = rxBuffer[0];
+			mcv_rx.commandDiverter = rxBuffer[1];
+			mcv_rx.pilotValvesRx = rxBuffer[2];
+			mcv_rx.spRefCirc = (rxBuffer[4]<<8) | (rxBuffer[3]);
+			mcv_rx.spRefDrain = (rxBuffer[6]<<8) | (rxBuffer[5]);
+			mcv_rx.selectComponent = rxBuffer[7];
+			mcv_rx.heaterFirstCfg = rxBuffer[8];
+			mcv_rx.rsvByte1 = rxBuffer[9];
+			mcv_rx.rsvByte2 = rxBuffer[10];
+			mcv_rx.pilotValves = mcv_rx.pilotValvesRx;
+		}
+
 		mcv_rx.rxComplete = false;
-
-		mcv_rx.pilotValves = mcv_rx.pilotValvesRx;
-
 		appCrcCheck(&appDw);
-
 	}
-
 }
 
 void appGetSwVersion(void)

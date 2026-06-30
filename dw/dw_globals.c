@@ -68,6 +68,7 @@ const appDwPar_t dwParam = {
 		.appParDwUART = {
 				.enabled = APP_TRUE,
 				.faultCntrMax = 1000u,
+				.faultResMax = 1000u,
 		},
 		.appParDwRelays = {
 				.enabled = APP_TRUE,
