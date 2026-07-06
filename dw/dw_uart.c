@@ -7,6 +7,7 @@
 
 #include "dw_globals.h"
 #include "drv_config.h"
+#include "mcinclude.h"
 #include "math.h"
 
 mcv_rx_uart mcv_rx;
@@ -16,6 +17,17 @@ uint8_t crc = 0x00;
 volatile uint8_t txIndex = 0;
 volatile uint8_t rxIdxAcu = 0;
 
+typedef struct
+{
+	app_uint8_t appFaultMgtCntr[2];
+	bool appFaultMgtStatus;
+} appFaultMgnt; // parameters for Dw application
+
+appFaultMgnt FaultMgt[SUPPORTED_TOTAL_MOTOR];
+#define N_EVENTS_HW_OC_TX     10U
+#define N_EVENTS_SW_OC_TX     10U
+
+static uint32_t appFaultManagement(uint8_t motor, uint32_t fault);
 
 void appUARTInit(void)
 {
@@ -47,6 +59,14 @@ void appUARTInit(void)
 	}
 
 	drvUart_Reset();
+
+	FaultMgt[DRAIN].appFaultMgtCntr[0] = 0U;
+	FaultMgt[DRAIN].appFaultMgtCntr[1] = 0U;
+	FaultMgt[DRAIN].appFaultMgtStatus = false;
+
+	FaultMgt[CIRCULATION].appFaultMgtCntr[0] = 0U;
+	FaultMgt[CIRCULATION].appFaultMgtCntr[1] = 0U;
+	FaultMgt[CIRCULATION].appFaultMgtStatus = false;
 }
 
 app_bool_t appIsStateFault(appDw_t* p_appDw)
@@ -71,6 +91,7 @@ app_bool_t appIsStateFault(appDw_t* p_appDw)
 void appUARTHandler(appDw_t* p_appDw)
 {
 	uint32_t fault = 0;
+	uint32_t temp;
 
 	//Load TX Buffer
 	if (mcv_tx.txReady)
@@ -112,15 +133,27 @@ void appUARTHandler(appDw_t* p_appDw)
 		p_appDw->v.fsDrainFaultFlag = (app_bool_t)mcIsStateFault(DRAIN);
 		p_appDw->v.appFaultFlag = (app_bool_t)appIsStateFault(p_appDw);
 
+		fault = 0;
+
 		if((p_appDw->v.fsCircFaultFlag) &&
 		   (p_appDw->v.activeState == CIRCULATION))
 		{
-			fault |= mcGetGeneratedFaultsBinary(CIRCULATION);
+			temp  = mcGetGeneratedFaultsBinary(CIRCULATION);
+			fault = appFaultManagement(CIRCULATION, temp);
+		}
+		else
+		{
+			FaultMgt[CIRCULATION].appFaultMgtStatus = false;
 		}
 		if((p_appDw->v.fsDrainFaultFlag) &&
 		   (p_appDw->v.activeState == DRAIN))
 		{
-			fault |= mcGetGeneratedFaultsBinary(DRAIN);
+			temp  = mcGetGeneratedFaultsBinary(DRAIN);
+			fault = appFaultManagement(DRAIN, temp);
+		}
+		else
+		{
+			FaultMgt[DRAIN].appFaultMgtStatus = false;
 		}
 		if(p_appDw->v.appFaultFlag)
 		{
@@ -235,4 +268,55 @@ uint8_t appCalcCRC(const uint8_t *data, uint8_t length)
         crc = crcTable[crc ^ data[i]];
     }
     return crc;
+}
+
+
+
+
+
+uint32_t appFaultManagement(uint8_t motor, uint32_t fault)
+{
+	uint32_t response;
+
+	response = fault;
+
+	//Manage SW OverCurrent:
+	if(fault & FS_BINARY_FLAG_OVER_CURRENT)
+	{
+		//Run it for the first time at fault event...
+		if(FaultMgt[motor].appFaultMgtStatus == false)
+		{
+			FaultMgt[motor].appFaultMgtCntr[0]++;
+			FaultMgt[motor].appFaultMgtStatus = true; //Set fault management status
+			if(FaultMgt[motor].appFaultMgtCntr[0] >= N_EVENTS_SW_OC_TX)
+			{
+				FaultMgt[motor].appFaultMgtCntr[0] = 0U;
+				return(fault); //Send all faults...
+			}
+		}
+
+		//Clear the flag...
+		response = fault & ~FS_BINARY_FLAG_OVER_CURRENT;
+	}
+
+	//Manage HW OverCurrent:
+	if(fault & FS_BINARY_FLAG_IPM_FAULT)
+	{
+		//Run it for the first time at fault event...
+		if(FaultMgt[motor].appFaultMgtStatus == false)
+		{
+			FaultMgt[motor].appFaultMgtCntr[1]++;
+			FaultMgt[motor].appFaultMgtStatus = true; //Set fault management status
+			if(FaultMgt[motor].appFaultMgtCntr[1] >= N_EVENTS_HW_OC_TX)
+			{
+				FaultMgt[motor].appFaultMgtCntr[1] = 0U;
+				return(fault); //Send all faults...
+			}
+		}
+
+		//Clear the flag...
+		response = fault & ~FS_BINARY_FLAG_IPM_FAULT;
+	}
+
+	return(response);
 }

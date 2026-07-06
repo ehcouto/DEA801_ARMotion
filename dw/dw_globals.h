@@ -68,8 +68,8 @@ typedef unsigned char sys_t;
 #define DRAIN_COMMAND_BITMASK   				(0x01U)
 
 #define VERSION_MAJOR 	  						(uint8_t)(1U)
-#define VERSION_MINOR 	  						(uint8_t)(21U)
-#define VERSION_BUGFIX 	  						(uint8_t)(18U)
+#define VERSION_MINOR 	  						(uint8_t)(22U)
+#define VERSION_BUGFIX 	  						(uint8_t)(0U)
 
 #define DRAIN_TYPE_BIT_FIELD 					(0x0U)
 #define CIRC_TYPE_BIT_FIELD 					(0x2U)

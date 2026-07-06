@@ -220,8 +220,8 @@ void drvInitMcu(void (*_McFuncFastLoop)(int32_t MxIndex),
 	ui16Modulo = PWM_MODULO;
 	BOARD_InitPins();
 
-	/*
     //WD_REFRESH;
+	/*
     FsAfterResetVarInit();
 
     FsResetCheck();
@@ -947,13 +947,11 @@ void ADC0_IRQHandler(void) //68us
     /* Clear fault flags */
     //PWMBase->FSTS = (PWMBase->FSTS & ~PWM_FSTS_FFLAG_MASK) | PWM_FSTS_FFLAG(0xF);
 
-	/*
     uartPri=NVIC_GetPriority(LPUART4_IRQn);
     adcPri=NVIC_GetPriority(ADC0_IRQn);
     gpioPri=NVIC_GetPriority(GPIO0_IRQn);
     ctimerPri=NVIC_GetPriority(CTIMER0_IRQn);
     systickPri=NVIC_GetPriority(SysTick_IRQn);
-	 */
 
 
 
