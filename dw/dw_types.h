@@ -222,13 +222,16 @@ typedef struct{
 }appParDwDoorSwitch_t;
 
 typedef struct{
-	volatile app_uint32_t faultCntr;
+	volatile app_uint32_t faultRXCntr;
+	volatile app_uint32_t faultTXCntr;
+	volatile app_uint16_t faultResCntr;
 	volatile app_bool_t flag;
 }appVarDwUART_t;
 
 typedef struct{
 	volatile app_bool_t enabled;
 	volatile app_uint32_t faultCntrMax;
+	volatile app_uint16_t faultResMax;
 }appParDwUART_t;
 
 typedef struct{

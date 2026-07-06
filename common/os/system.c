@@ -52,7 +52,7 @@ static void osInitMc(void)
 {
     mcInit.mcDrvTurnOnInrushRelay = brdTurnOnInrushRelay;
     mcInitMotorControl(&mcInit);
-
+    
 #ifdef MC_ENABLE_FIRST_MOTOR
     mcMpvInit1.freqFL = MOTOR1_FAST_LOOP_FREQUENCY;
     mcMpvInit1.freqSL = MOTOR1_SLOW_LOOP_FREQUENCY;
@@ -79,7 +79,7 @@ static void osInitMc(void)
     mcMpvInit1.mcBrdShortCircBotTransistors = brdShortCircuitBottomTransistors_M1;
     mcAddMotor(&mcMpvInit1);
 #endif
-
+    
 #ifdef MC_ENABLE_SECOND_MOTOR
     mcMpvInit2.freqFL = MOTOR2_FAST_LOOP_FREQUENCY;
     mcMpvInit2.freqSL = MOTOR2_SLOW_LOOP_FREQUENCY;

@@ -42,7 +42,7 @@ typedef unsigned char sys_t;
 #define AS_BINARY_FLAG_HEATER					(0x00200000U)
 #define AS_BINARY_FLAG_DOOR_SWITCH				(0x00400000U)
 #define AS_BINARY_FLAG_DIVERTER					(0x00800000U)
-#define AS_BINARY_FLAG_UART_RX					(0x01000000U)
+#define AS_BINARY_FLAG_UART_FAULT			    (0x01000000U)
 #define AS_BINARY_FLAG_RELAY_STUCK				(0x02000000U)
 
 #define CIRC_STOP_RAMP							(5000.0f)
@@ -68,7 +68,7 @@ typedef unsigned char sys_t;
 #define DRAIN_COMMAND_BITMASK   				(0x01U)
 
 #define VERSION_MAJOR 	  						(uint8_t)(1U)
-#define VERSION_MINOR 	  						(uint8_t)(21U)
+#define VERSION_MINOR 	  						(uint8_t)(22U)
 #define VERSION_BUGFIX 	  						(uint8_t)(0U)
 
 #define DRAIN_TYPE_BIT_FIELD 					(0x0U)

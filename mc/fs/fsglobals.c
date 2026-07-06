@@ -981,8 +981,8 @@ const fsPar_t fsp_dw_circ_W20007335 = {
         .maxVector2Current = 0.9025f,//0.81      /* mcc_t maxVector2Current */
         .phaseCurrentErrorCntrsMax = 4u,     /* mc_uint16_t phaseCurrentErrorCntrsMax */
         .vector2CurrentErrorCntrMax = 4u,     /* mc_uint16_t vector2CurrentErrorCntrMax */
-        .phaseCurrentFaultCntrMax = 7u,      /* mc_uint16_t phaseCurrentFaultCntrMax */
-        .vector2CurrentFaultCntrMax = 7u,      /* mc_uint16_t vector2CurrentFaultCntrMax */
+        .phaseCurrentFaultCntrMax = 100u,      /* mc_uint16_t phaseCurrentFaultCntrMax */
+        .vector2CurrentFaultCntrMax = 100u,      /* mc_uint16_t vector2CurrentFaultCntrMax */
         .duration = 2000u    /* htck_t duration */
     },
     .current_integral = {
@@ -1102,7 +1102,7 @@ const fsPar_t fsp_dw_circ_W20007335 = {
     },
     .ipm_fault_out = {   /* fsIpmFaultOutPar_t  ipm_fault_out */
         .enabled = MC_TRUE,              /* mc_bool_t enabled */
-        .faultCntrMax = 2u,              /* mc_uint16_t faultCntrMax */
+        .faultCntrMax = 100u,              /* mc_uint16_t faultCntrMax */
         .duration = 10000u            /* htck_t duration */
     },
     .over_load = {
@@ -1146,8 +1146,8 @@ const fsPar_t fsp_dw_circ_W11652801 = {   /* RAC fan motor safety parameters */
         .maxVector2Current = 0.9025f,//0.81      /* mcc_t maxVector2Current */
         .phaseCurrentErrorCntrsMax = 4u,     /* mc_uint16_t phaseCurrentErrorCntrsMax */
         .vector2CurrentErrorCntrMax = 4u,     /* mc_uint16_t vector2CurrentErrorCntrMax */
-        .phaseCurrentFaultCntrMax = 7u,      /* mc_uint16_t phaseCurrentFaultCntrMax */
-        .vector2CurrentFaultCntrMax = 7u,      /* mc_uint16_t vector2CurrentFaultCntrMax */
+        .phaseCurrentFaultCntrMax = 100u,      /* mc_uint16_t phaseCurrentFaultCntrMax */
+        .vector2CurrentFaultCntrMax = 100u,      /* mc_uint16_t vector2CurrentFaultCntrMax */
         .duration = 2000u    /* htck_t duration */
     },
     .current_integral = {
@@ -1267,7 +1267,7 @@ const fsPar_t fsp_dw_circ_W11652801 = {   /* RAC fan motor safety parameters */
     },
     .ipm_fault_out = {   /* fsIpmFaultOutPar_t  ipm_fault_out */
         .enabled = MC_TRUE,              /* mc_bool_t enabled */
-        .faultCntrMax = 2u,              /* mc_uint16_t faultCntrMax */
+        .faultCntrMax = 100u,              /* mc_uint16_t faultCntrMax */
         .duration = 10000u            /* htck_t duration */
     },
     .over_load = {
@@ -1311,8 +1311,8 @@ const fsPar_t fsp_dw_drain_W11402566 = {   /* RAC fan motor safety parameters */
         .maxVector2Current = 0.49f,//0.49f,      /* mcc_t maxVector2Current */
         .phaseCurrentErrorCntrsMax = 7u,     /* mc_uint16_t phaseCurrentErrorCntrsMax */
         .vector2CurrentErrorCntrMax = 7u,     /* mc_uint16_t vector2CurrentErrorCntrMax */
-        .phaseCurrentFaultCntrMax = 10u,      /* mc_uint16_t phaseCurrentFaultCntrMax */
-        .vector2CurrentFaultCntrMax = 10u,      /* mc_uint16_t vector2CurrentFaultCntrMax */
+        .phaseCurrentFaultCntrMax = 100u,      /* mc_uint16_t phaseCurrentFaultCntrMax */
+        .vector2CurrentFaultCntrMax = 100u,      /* mc_uint16_t vector2CurrentFaultCntrMax */
         .duration = 10000u    /* htck_t duration */
     },
     .current_integral = {
@@ -1432,7 +1432,7 @@ const fsPar_t fsp_dw_drain_W11402566 = {   /* RAC fan motor safety parameters */
     },
     .ipm_fault_out = {   /* fsIpmFaultOutPar_t  ipm_fault_out */
         .enabled = MC_TRUE,              /* mc_bool_t enabled */
-        .faultCntrMax = 2u,              /* mc_uint16_t faultCntrMax */
+        .faultCntrMax = 100u,              /* mc_uint16_t faultCntrMax */
         .duration = 10000u            /* htck_t duration */
     },
     .over_load = {
@@ -1476,8 +1476,8 @@ const fsPar_t fsp_dw_drain_W11377410 = {   /* RAC fan motor safety parameters */
         .maxVector2Current = 0.5625f,//0.49f,      /* mcc_t maxVector2Current */
         .phaseCurrentErrorCntrsMax = 7u,     /* mc_uint16_t phaseCurrentErrorCntrsMax */
         .vector2CurrentErrorCntrMax = 7u,     /* mc_uint16_t vector2CurrentErrorCntrMax */
-        .phaseCurrentFaultCntrMax = 10u,      /* mc_uint16_t phaseCurrentFaultCntrMax */
-        .vector2CurrentFaultCntrMax = 10u,      /* mc_uint16_t vector2CurrentFaultCntrMax */
+        .phaseCurrentFaultCntrMax = 100u,      /* mc_uint16_t phaseCurrentFaultCntrMax */
+        .vector2CurrentFaultCntrMax = 100u,      /* mc_uint16_t vector2CurrentFaultCntrMax */
         .duration = 10000u    /* htck_t duration */
     },
     .current_integral = {
@@ -1597,7 +1597,7 @@ const fsPar_t fsp_dw_drain_W11377410 = {   /* RAC fan motor safety parameters */
     },
     .ipm_fault_out = {   /* fsIpmFaultOutPar_t  ipm_fault_out */
         .enabled = MC_TRUE,              /* mc_bool_t enabled */
-        .faultCntrMax = 2u,              /* mc_uint16_t faultCntrMax */
+        .faultCntrMax = 100u,              /* mc_uint16_t faultCntrMax */
         .duration = 10000u            /* htck_t duration */
     },
     .over_load = {

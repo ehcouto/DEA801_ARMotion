@@ -100,6 +100,8 @@ void InitFlexPWM()
     /* PWM sub-module 0 trigger on VAL4 enabled for ADC synchronization */
     PWMBase->SM[0].TCTRL |= PWM_TCTRL_OUT_TRIG_EN(1 << 4) | PWM_TCTRL_TRGFRQ(1);
     PWMBase->SM[1].TCTRL |= PWM_TCTRL_OUT_TRIG_EN(1 << 4) | PWM_TCTRL_TRGFRQ(1);
+    PWMBase->SM[2].TCTRL |= PWM_TCTRL_OUT_TRIG_EN(1 << 4) | PWM_TCTRL_TRGFRQ(1);
+
         /* Set dead-time register */
     PWMBase->SM[0].DTCNT0 = PWM_DTCNT0_DTCNT0(PWM_DEADTIME);
     PWMBase->SM[1].DTCNT0 = PWM_DTCNT0_DTCNT0(PWM_DEADTIME);

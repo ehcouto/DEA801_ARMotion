@@ -8,6 +8,7 @@
 #include "drv_config.h"
 #include "mcglobals.h"
 
+static void UART_Reset(void);
 
 volatile uint8_t enDSFlagPWM=0;
 volatile uint8_t enCRCFlagPWM=0;
@@ -16,6 +17,10 @@ void appCrcCheckInit(appDw_t* p_appDw)
 {
 	p_appDw->v.appVarDwCrcCheck.faultCntr = 0;
 	p_appDw->v.appVarDwCrcCheck.flag = APP_FALSE;
+
+	p_appDw->v.appVarDwUART.faultRXCntr  = 0u;
+	p_appDw->v.appVarDwUART.faultTXCntr  = 0u;
+	p_appDw->v.appVarDwUART.faultResCntr = 0u;
 }
 
 void appCrcCheck(appDw_t* p_appDw)
@@ -166,34 +171,77 @@ void appUARTCheck(appDw_t* p_appDw)
 {
     if(p_appDw->p.appParDwUART.enabled == APP_FALSE)
     {
-    	p_appDw->v.appVarDwUART.faultCntr = 0u;
+    	p_appDw->v.appVarDwUART.faultRXCntr = 0u;
+    	p_appDw->v.appVarDwUART.faultTXCntr = 0u;
         return;
     }
     else
     {
-        p_appDw->v.appVarDwUART.faultCntr++;
+        p_appDw->v.appVarDwUART.faultRXCntr++;
+        p_appDw->v.appVarDwUART.faultTXCntr++;
 
-    	if(p_appDw->v.appVarDwUART.faultCntr >
+        // RX Checking
+    	if(p_appDw->v.appVarDwUART.faultRXCntr >
         p_appDw->p.appParDwUART.faultCntrMax)
     	{
+    		//Reset the UART Peripheral
+    		if(p_appDw->v.appVarDwUART.flag == APP_FALSE)
+    		{
+    			UART_Reset(); //Reset only for the first time the fault is raised after normal operation
+    		}
+
     		p_appDw->v.appVarDwUART.flag = APP_TRUE;
 
     		//p_appDw->v.generatedFaultsBinary &= 0x00;
-    		p_appDw->v.generatedFaultsBinary |= AS_BINARY_FLAG_UART_RX;
+    		p_appDw->v.generatedFaultsBinary |= AS_BINARY_FLAG_UART_FAULT;
 
     		p_appDw->v.mc_app_state = APP_STATE_FAULT;
     		p_appDw->v.appTotalGeneratedFault++;
 
     		p_appDw->v.appFatalFaultFlag = APP_TRUE;
 
-    		p_appDw->v.appVarDwUART.faultCntr = p_appDw->p.appParDwUART.faultCntrMax;
+    		p_appDw->v.appVarDwUART.faultRXCntr = p_appDw->p.appParDwUART.faultCntrMax;
 
+    		p_appDw->v.appVarDwUART.faultResCntr = 0;
+    	}
+
+    	// TX Checking
+    	else if(p_appDw->v.appVarDwUART.faultTXCntr >
+        		p_appDw->p.appParDwUART.faultCntrMax)
+    	{
+    		//Reset the UART Peripheral
+    		if(p_appDw->v.appVarDwUART.flag == APP_FALSE)
+    		{
+    			UART_Reset(); // This function is called on the first occurrence of a fault after normal operation.
+    		}
+
+    		p_appDw->v.appVarDwUART.flag = APP_TRUE;
+
+    		//p_appDw->v.generatedFaultsBinary &= 0x00;
+    		p_appDw->v.generatedFaultsBinary |= AS_BINARY_FLAG_UART_FAULT;
+
+    		p_appDw->v.mc_app_state = APP_STATE_FAULT;
+    		p_appDw->v.appTotalGeneratedFault++;
+
+    		p_appDw->v.appFatalFaultFlag = APP_TRUE;
+
+    		p_appDw->v.appVarDwUART.faultTXCntr = p_appDw->p.appParDwUART.faultCntrMax;
+
+    		p_appDw->v.appVarDwUART.faultResCntr = 0;
     	}
     	else
     	{
-        	p_appDw->v.appVarDwUART.flag = APP_FALSE;
-        	if(p_appDw->v.generatedFaultsBinary & AS_BINARY_FLAG_UART_RX)
-        		p_appDw->v.generatedFaultsBinary &= 0x00;
+    		if(p_appDw->v.appVarDwUART.faultResCntr < p_appDw->p.appParDwUART.faultResMax)
+    		{
+    			p_appDw->v.appVarDwUART.faultResCntr++;
+    		}
+    		else
+    		{
+    			p_appDw->v.appVarDwUART.faultResCntr = p_appDw->p.appParDwUART.faultResMax;
+    			p_appDw->v.appVarDwUART.flag = APP_FALSE;
+    			if(p_appDw->v.generatedFaultsBinary & AS_BINARY_FLAG_UART_FAULT)
+    				p_appDw->v.generatedFaultsBinary &= 0x00;
+    		}
     	}
     }
 }
@@ -340,3 +388,23 @@ void appFaultControl(appDw_t* p_appDw)
 
 }
 
+
+
+void UART_Reset(void)
+{
+	// Disable Receiver & Transmitter
+	LPUART4->CTRL &= ~(LPUART_CTRL_TE_MASK | LPUART_CTRL_RE_MASK);
+
+	// Before Resetting the module, disable the interrupts
+	LPUART_DisableInterrupts(LPUART4, kLPUART_TxDataRegEmptyInterruptEnable);
+	LPUART_DisableInterrupts(LPUART4, kLPUART_RxDataRegFullInterruptEnable);
+
+	// Reset LPUART4
+	LPUART_SoftwareReset(LPUART4);
+
+	// Re-initialize UART
+	InitUART();
+
+	//Reset Variables
+	appUARTInit();
+}
