@@ -11,9 +11,10 @@ void main(void)
     while (1)
     {
 	    osHandlerML();
-	    //FMSTR_Poll();
+	    FMSTR_Poll();
 
-    	//FsRuntimeClockTest();
-    	//FsCpuBackgroundTest();
+    	FsRuntimeClockTest();
+    	FsCpuBackgroundTest();
+
 	}
 }

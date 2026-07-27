@@ -221,7 +221,6 @@ void drvInitMcu(void (*_McFuncFastLoop)(int32_t MxIndex),
 	BOARD_InitPins();
 
     //WD_REFRESH;
-	/*
     FsAfterResetVarInit();
 
     FsResetCheck();
@@ -241,7 +240,6 @@ void drvInitMcu(void (*_McFuncFastLoop)(int32_t MxIndex),
     WD_REFRESH;
 
     FsFlashTestRtInit();
-*/
 
 
     InitADC0();
@@ -1037,13 +1035,13 @@ void ctimer_match0_callback(uint32_t flags) //35us
     appDrainTimer(&appDw);
 
 	ui32SysticIsrCnt++;
-	/*
 	FsRuntimeClockUpdate();
 	FsFlashTestRt();
 	WD_REFRESH;
+    /* Safety tests which cannot be interrupted */
 	FsIsrTests();
 	WD_REFRESH;
-	*/
+
 }
 
 // 1ms Timer (SysTick)

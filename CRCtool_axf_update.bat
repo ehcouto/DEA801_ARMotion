@@ -1,6 +1,6 @@
 @echo off
 REM 1. CRC Tool'u çalıştır (Yeni dosya oluşturacak: DEA802_ARMotion_Dbg_crc.axf)
-"%~dp0crctool_2025_08.exe" -nw "DEA802_ARMotion_Dbg.axf"
+"%~dp0crctool_2026_07.exe" -nw "DEA802_ARMotion_Dbg.axf"
 
 REM 2. Hata kontrolü (Opsiyonel ama önerilir)
 IF %ERRORLEVEL% NEQ 0 (

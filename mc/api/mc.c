@@ -8,22 +8,6 @@
 #include <stdbool.h>
 #include "mcinclude.h"
 
-float BD_Speed_Ref;
-float BD_Speed_Est;
-float BD_Isd;
-float BD_Isd_Ref;
-float BD_Isq;
-float BD_Isq_Ref;
-float BD_Vsd;
-float BD_Vsq;
-float BD_Isa;
-float BD_Isb;
-float BD_Isc;
-float BD_Iamp2;
-float BD_Torque_mNm;
-float BD_Duty_U;
-float BD_Duty_V;
-float BD_Duty_W;
 
 char *MCP_VERSION = "AR_MCP_000_000_000_001";
 
@@ -401,27 +385,6 @@ void mcMxHandlerFL(int32_t l_MxIndex)
     {
         /* do nothing */
     }
-
-    BD_Speed_Ref = mpv[(mindx_t)l_MxIndex].v.spref;
-    BD_Speed_Est = mpv[(mindx_t)l_MxIndex].v.spest;
-    BD_Isd = mpv[(mindx_t)l_MxIndex].v.idq.d;
-    BD_Isd_Ref = mpv[(mindx_t)l_MxIndex].v.idqref.d;
-    BD_Isq = mpv[(mindx_t)l_MxIndex].v.idq.q;
-    BD_Isq_Ref = mpv[(mindx_t)l_MxIndex].v.idqref.q;
-    BD_Vsd = mpv[(mindx_t)l_MxIndex].v.vdq.d;
-    BD_Vsq = mpv[(mindx_t)l_MxIndex].v.vdq.q;
-
-    BD_Isa = mpv[(mindx_t)l_MxIndex].v.iuvw.u * 1000.0f;
-    BD_Isb = mpv[(mindx_t)l_MxIndex].v.iuvw.v * 1000.0f;
-    BD_Isc = mpv[(mindx_t)l_MxIndex].v.iuvw.w * 1000.0f;
-
-    BD_Iamp2 = mpv[(mindx_t)l_MxIndex].v.iamp2 * 1000.0f;
-
-    BD_Torque_mNm = (mpv[(mindx_t)l_MxIndex].v.idqref.q * mpv[(mindx_t)l_MxIndex].p.phys.Kt) * 1000.0f;
-
-    BD_Duty_U = (uint16_t)(32768 * (1 - mpv[(mindx_t)l_MxIndex].v.duvw_comp.u));
-    BD_Duty_V = (uint16_t)(32768 * (1 - mpv[(mindx_t)l_MxIndex].v.duvw_comp.v));
-    BD_Duty_W = (uint16_t)(32768 * (1 - mpv[(mindx_t)l_MxIndex].v.duvw_comp.w));
 }
 
 void mcMxHandlerSL(int32_t l_MxIndex)
