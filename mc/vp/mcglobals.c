@@ -3143,7 +3143,7 @@ const mcCp_t mcp_dw_circ_W11652801 = {    /* WM orca motor drive parameters */
 	    },
 		.piSpeedR1 = {   /* mcpPiController_t piSpeedR1 */
 			.kp = 0.0005744f,//0.000924f,//0.00132f      /* kp */
-			.ki = 0.002154f,//0.00495f, //0.0033f        /* ki */
+			.ki = 0.003059f,//0.00495f, //0.0033f        /* ki */
 			.antiWindupCoef = 1.0f,           /* antiWindupCoef */
 			.antiWindupLimit = 0.85f            /* antiWindupLimit */
 		},
@@ -3163,16 +3163,16 @@ const mcCp_t mcp_dw_circ_W11652801 = {    /* WM orca motor drive parameters */
 		.piSpeedR2toR3 = 5000,      /* mcsp_t piSpeedR2toR3 */
 	    .piDCurrent = {   /* mcpPiController_t piDCurrent */
 	        .kp = 184.9f,         /* kp */
-	        .ki = 59505.5f,         /* ki */
-	        .antiWindupCoef = 0.01f,           /* antiWindupCoef */
-	        .antiWindupLimit = 100.0f  //200.0f         /* antiWindupLimit */
+	        .ki = 160794.5f,         /* ki */
+	        .antiWindupCoef = 0.90f,           /* antiWindupCoef */
+	        .antiWindupLimit = 50.0f  //200.0f         /* antiWindupLimit */
 	    },
 	    .zcCoeffDCurrent = 1.0f,            /* period_t zcCoeffDCurrent */
 	    .piQCurrent = {   /* mcpPiController_t piQCurrent */
 		    .kp = 184.9f,         /* kp */
-		    .ki = 59505.5f,         /* ki */
-	        .antiWindupCoef = 0.01f,           /* antiWindupCoef */
-	        .antiWindupLimit = 100.0f  //200.0f            /* antiWindupLimit */
+		    .ki = 160794.5f,         /* ki */
+	        .antiWindupCoef = 0.90f,           /* antiWindupCoef */
+	        .antiWindupLimit = 50.0f  //200.0f            /* antiWindupLimit */
 	    },
 	    .zcCoeffQCurrent = 1.0f,            /* period_t zcCoeffQCurrent */
 	    .decouplingMethod = MC_DECOUPLING_METHOD_CCALC,     /* mcDecouplingMethod_t decouplingMethod */

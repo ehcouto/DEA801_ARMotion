@@ -1038,7 +1038,6 @@ void ctimer_match0_callback(uint32_t flags) //35us
 	FsRuntimeClockUpdate();
 	FsFlashTestRt();
 	WD_REFRESH;
-    /* Safety tests which cannot be interrupted */
 	FsIsrTests();
 	WD_REFRESH;
 
