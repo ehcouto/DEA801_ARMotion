@@ -21,8 +21,11 @@ void appAddMotors(void)
 {
 	mcAddMotor(&mcMpvInit1);
 	mcAddMotor(&mcMpvInit2);
-	mpv[CIRCULATION].control_state=JUST_POWERED;
-	mpv[DRAIN].control_state=JUST_POWERED;
+
+	//Reset MC State Machine
+	mpv[CIRCULATION].v.state = JUST_POWERED;
+	mpv[DRAIN].v.state       = JUST_POWERED;
+
 	mcEnableMotorControl(CIRCULATION);
 	mcEnableMotorControl(DRAIN);
 }
