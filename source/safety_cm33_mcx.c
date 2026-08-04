@@ -28,7 +28,7 @@
 #define REF_TIMER_CLOCK_FREQUENCY 45e06
 #define SYSTICK_RELOAD_VALUE      180000
 #define ISR_FREQUENCY             1000 /* Hz */
-#define CLOCK_TEST_TOLERANCE      100 //20  /* % */
+#define CLOCK_TEST_TOLERANCE      20 //20  /* % */
 
 #define PC_TEST_PATTERN 0x2001DFF0 /* Test address for Program counter test */
 
@@ -500,7 +500,7 @@ void FsClockTestIsr(fs_clock_test_t *psSafetyClockTest)
  */
 void FsClockTestCheck(safety_common_t *psSafetyCommon, fs_clock_test_t *psSafetyClockTest)
 {
-    if (psSafetyClockTest->ui32ClockTestStart) /* condition is valid after the first Systick interrupt */
+    if (psSafetyClockTest->ui32ClockTestStart == 10) /* condition is valid after the first Systick interrupt */
     {
         psSafetyCommon->ui32ClockTestResult =
             FS_CLK_Check(psSafetyClockTest->ui32ClockTestContext, psSafetyClockTest->ui32ClockTestLimitLow,
@@ -585,7 +585,7 @@ void FsAfterResetClockTest()
 {
 	/* Init resources for clock test */
 	FsClockTestInit(&sFsCommon, &sFsClockTest);
-	SysTick_Config(SYSTICK_RELOAD_VALUE);
+	//SysTick_Config(SYSTICK_RELOAD_VALUE);
 }
 /**
  * @brief Perform clock test
