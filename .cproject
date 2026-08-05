@@ -415,6 +415,18 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="com.crt.advproject.config.exe.debug.518692204.590191949" name="fsl_lpadc.c" rcbsApplicability="disable" resourcePath="drivers/fsl_lpadc.c" toolsToInvoke="com.crt.advproject.gcc.exe.debug.946195566.192708405">
+						<tool id="com.crt.advproject.gcc.exe.debug.946195566.192708405" name="MCU C Compiler" superClass="com.crt.advproject.gcc.exe.debug.946195566">
+							<option id="com.crt.advproject.gcc.exe.debug.option.optimization.level.1356446883" superClass="com.crt.advproject.gcc.exe.debug.option.optimization.level" value="gnu.c.optimization.level.none" valueType="enumerated"/>
+							<inputType id="com.crt.advproject.compiler.input.1080811441" superClass="com.crt.advproject.compiler.input"/>
+						</tool>
+						<tool customBuildStep="true" id="org.eclipse.cdt.managedbuilder.ui.rcbs.287116396" name="Resource Custom Build Step">
+							<inputType id="org.eclipse.cdt.managedbuilder.ui.rcbs.inputtype.1152923077" name="Resource Custom Build Step Input Type">
+								<additionalInput kind="additionalinputdependency" paths=""/>
+							</inputType>
+							<outputType id="org.eclipse.cdt.managedbuilder.ui.rcbs.outputtype.16702861" name="Resource Custom Build Step Output Type"/>
+						</tool>
+					</fileInfo>
 					<sourceEntries>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="CMSIS"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="board"/>
@@ -823,7 +835,7 @@
 								<option id="com.crt.advproject.link.gcc.lto.optmization.level.1472649058" name="Link-time optimization level" superClass="com.crt.advproject.link.gcc.lto.optmization.level"/>
 								<option id="com.crt.advproject.link.fpu.1652802152" name="Floating point" superClass="com.crt.advproject.link.fpu" value="com.crt.advproject.link.fpu.fpv5sp.hard" valueType="enumerated"/>
 								<option id="com.crt.advproject.link.manage.1564084224" name="Manage linker script" superClass="com.crt.advproject.link.manage" value="true" valueType="boolean"/>
-								<option id="com.crt.advproject.link.script.472228915" name="Linker script" superClass="com.crt.advproject.link.script" value="DEA_802_ARMotion_Release.ld" valueType="string"/>
+								<option id="com.crt.advproject.link.script.472228915" name="Linker script" superClass="com.crt.advproject.link.script" value="DEA802_ARMotion_Release_Release.ld" valueType="string"/>
 								<option id="com.crt.advproject.link.scriptdir.1039904033" name="Script path" superClass="com.crt.advproject.link.scriptdir"/>
 								<option id="com.crt.advproject.link.crpenable.2076996936" name="Enable automatic placement of Code Read Protection field in image" superClass="com.crt.advproject.link.crpenable"/>
 								<option id="com.crt.advproject.link.flashconfigenable.1870415125" name="Enable automatic placement of Flash Configuration field in image" superClass="com.crt.advproject.link.flashconfigenable" value="true" valueType="boolean"/>
