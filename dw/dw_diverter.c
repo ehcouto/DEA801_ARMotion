@@ -22,6 +22,8 @@ void appDiverterInit(appDw_t* p_appDw)
 	p_appDw->v.appVarDwDiverter.diverterType = DIVERTERLESS;
 	p_appDw->v.appVarDwDiverter.firstFlag2W = APP_FALSE;
 	p_appDw->v.appVarDwDiverter.secondFlag2W = APP_FALSE;
+	p_appDw->v.appVarDwDiverter.divSyncFlag = APP_FALSE;
+	p_appDw->v.appVarDwDiverter.adcHighPrev = APP_FALSE;
 	mcv_rx.commandDiverter = 0;
 }
 
@@ -37,6 +39,8 @@ void appDiverterReset(appDw_t* p_appDw)
 	p_appDw->v.appVarDwDiverter.diverInitFlag = APP_FALSE;
 	p_appDw->v.appVarDwDiverter.firstFlag2W = APP_FALSE;
 	p_appDw->v.appVarDwDiverter.secondFlag2W = APP_FALSE;
+	p_appDw->v.appVarDwDiverter.divSyncFlag = APP_FALSE;
+	p_appDw->v.appVarDwDiverter.adcHighPrev = APP_FALSE;
 	mcv_rx.commandDiverter = 0;
 }
 
@@ -62,7 +66,7 @@ void appDetectDiverterType(appDw_t* p_appDw)
 	}
 
 }
-volatile uint32_t divCntTest;
+
 void appDiverter3Way(appDw_t* p_appDw)
 {
 	if(!p_appDw->v.appVarDwDiverter.posDivCnt
@@ -96,7 +100,6 @@ void appDiverter3Way(appDw_t* p_appDw)
 
 	else
 	{
-		++divCntTest;
 		appDwFunc.appDwDiverterReset();
 		p_appDw->v.appVarDwDiverter.diverCommand = APP_FALSE;
 		p_appDw->v.appVarDwDiverter.posDivCnt = 0;
@@ -108,51 +111,72 @@ void appDiverter3Way(appDw_t* p_appDw)
 
 	if(p_appDw->v.appVarDwDiverter.diverCommand && !p_appDw->v.appVarDwDiverter.divReadyFlag)
 	{
-		if(adcValDiverter > p_appDw->p.appParDwDiverter.divAdcLow)
-			++p_appDw->v.appVarDwDiverter.posDivCnt;
+		uint8_t adcHigh = (adcValDiverter > p_appDw->p.appParDwDiverter.divAdcLow);
+		if(!p_appDw->v.appVarDwDiverter.divSyncFlag)
+		{
+			if(p_appDw->v.appVarDwDiverter.adcHighPrev && !adcHigh)
+			{
+				p_appDw->v.appVarDwDiverter.divSyncFlag = APP_TRUE;
+				p_appDw->v.appVarDwDiverter.posDivCnt   = 0;
+				p_appDw->v.appVarDwDiverter.divStopCnt  = 0;
+			}
+			p_appDw->v.appVarDwDiverter.adcHighPrev = adcHigh;
+		}
 		else
 		{
-			++p_appDw->v.appVarDwDiverter.divStopCnt;
-			if((p_appDw->v.appVarDwDiverter.posDivCnt > p_appDw->p.appParDwDiverter.divLowMin)
-					&& (p_appDw->v.appVarDwDiverter.posDivCnt < p_appDw->p.appParDwDiverter.divPos0HighMin))
+			uint8_t adcHighNow = (adcValDiverter > p_appDw->p.appParDwDiverter.divAdcLow);
+
+			if(!p_appDw->v.appVarDwDiverter.adcHighPrev && adcHighNow)
+				p_appDw->v.appVarDwDiverter.divStopCnt = 0;
+			p_appDw->v.appVarDwDiverter.adcHighPrev = adcHighNow;
+
+			if(adcValDiverter > p_appDw->p.appParDwDiverter.divAdcLow)
+				++p_appDw->v.appVarDwDiverter.posDivCnt;
+			else
+			{
+				++p_appDw->v.appVarDwDiverter.divStopCnt;
+				if((p_appDw->v.appVarDwDiverter.posDivCnt > p_appDw->p.appParDwDiverter.divLowMin)
+						&& (p_appDw->v.appVarDwDiverter.posDivCnt < p_appDw->p.appParDwDiverter.divPos0HighMin))
+					p_appDw->v.appVarDwDiverter.posDivCnt = 0;
+			}
+
+
+			if(p_appDw->v.appVarDwDiverter.divStopCnt > p_appDw->p.appParDwDiverter.divHighMin
+					&& p_appDw->v.appVarDwDiverter.divStopCnt < p_appDw->p.appParDwDiverter.divHighMax
+					&& (adcValDiverter > p_appDw->p.appParDwDiverter.divAdcLow))
+				p_appDw->v.appVarDwDiverter.divStopCnt = 0;
+			else
+			{
+				;
+			}
+
+			if(p_appDw->v.appVarDwDiverter.posDivCnt > p_appDw->p.appParDwDiverter.divLowMin
+					&& p_appDw->v.appVarDwDiverter.posDivCnt < p_appDw->p.appParDwDiverter.divLowMax
+					&& (adcValDiverter < p_appDw->p.appParDwDiverter.divAdcLow))
 				p_appDw->v.appVarDwDiverter.posDivCnt = 0;
+			else
+			{
+				;
+			}
+
+
+			if(p_appDw->v.appVarDwDiverter.posDivCnt>p_appDw->p.appParDwDiverter.divPos0HighMin
+					&& p_appDw->v.appVarDwDiverter.posDivCnt<p_appDw->p.appParDwDiverter.divPos0HighMax
+					&& p_appDw->v.appVarDwDiverter.divStopCnt>p_appDw->p.appParDwDiverter.divPos0HighMin
+					&& p_appDw->v.appVarDwDiverter.divStopCnt<p_appDw->p.appParDwDiverter.divPos0HighMax
+					&& (adcValDiverter < p_appDw->p.appParDwDiverter.divAdcLow))
+			{
+				p_appDw->v.appVarDwDiverter.divPosReal = 0;
+				p_appDw->v.appVarDwDiverter.divReadyFlag = APP_TRUE;
+				p_appDw->v.appVarDwDiverter.diverInitFlag = APP_FALSE;
+
+			}
+			else
+			{
+				;
+			}
 		}
 
-
-		if(p_appDw->v.appVarDwDiverter.divStopCnt > p_appDw->p.appParDwDiverter.divHighMin
-				&& p_appDw->v.appVarDwDiverter.divStopCnt < p_appDw->p.appParDwDiverter.divHighMax
-				&& (adcValDiverter > p_appDw->p.appParDwDiverter.divAdcLow))
-			p_appDw->v.appVarDwDiverter.divStopCnt = 0;
-		else
-		{
-			;
-		}
-
-		if(p_appDw->v.appVarDwDiverter.posDivCnt > p_appDw->p.appParDwDiverter.divLowMin
-				&& p_appDw->v.appVarDwDiverter.posDivCnt < p_appDw->p.appParDwDiverter.divLowMax
-				&& (adcValDiverter < p_appDw->p.appParDwDiverter.divAdcLow))
-			p_appDw->v.appVarDwDiverter.posDivCnt = 0;
-		else
-		{
-			;
-		}
-
-
-		if(p_appDw->v.appVarDwDiverter.posDivCnt>p_appDw->p.appParDwDiverter.divPos0HighMin
-				&& p_appDw->v.appVarDwDiverter.posDivCnt<p_appDw->p.appParDwDiverter.divPos0HighMax
-				&& p_appDw->v.appVarDwDiverter.divStopCnt>p_appDw->p.appParDwDiverter.divPos0HighMin
-				&& p_appDw->v.appVarDwDiverter.divStopCnt<p_appDw->p.appParDwDiverter.divPos0HighMax
-				&& (adcValDiverter < p_appDw->p.appParDwDiverter.divAdcLow))
-		{
-			p_appDw->v.appVarDwDiverter.divPosReal = 0;
-			p_appDw->v.appVarDwDiverter.divReadyFlag = APP_TRUE;
-			p_appDw->v.appVarDwDiverter.diverInitFlag = APP_FALSE;
-
-		}
-		else
-		{
-			;
-		}
 	}
 
 	else if(p_appDw->v.appVarDwDiverter.diverCommand && p_appDw->v.appVarDwDiverter.divReadyFlag)
