@@ -132,6 +132,8 @@ typedef struct{
 	volatile app_bool_t firstFlag2W;
 	volatile app_bool_t secondFlag2W;
 	volatile app_uint8_t divDesiredType;
+	volatile app_bool_t divSyncFlag;
+	volatile app_bool_t adcHighPrev;
 } appVarDwDiver_t;
 
 typedef struct{
