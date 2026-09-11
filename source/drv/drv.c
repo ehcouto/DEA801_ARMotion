@@ -217,6 +217,7 @@ void drvInitMcu(void (*_McFuncFastLoop)(int32_t MxIndex),
     __disable_irq();
     ui32NoInit = ui32NoInit + 1;
 	BOARD_BootClockFROHF180M();
+    appDw.v.funcInitReady = false; //Eduardo: Force an application Init Flag reset.
 	ui16Modulo = PWM_MODULO;
 	BOARD_InitPins();
 
@@ -253,7 +254,7 @@ void drvInitMcu(void (*_McFuncFastLoop)(int32_t MxIndex),
     InitComps();
     InitDac();
     SlowLoopInt();
-    InitGpioInt();
+    //InitGpioInt(); //Eduardo: Moved to appDwInit() to avoid its usage prior pointers initialization.
     FMSTR_Init();
     SysTick_Config(SystemCoreClock / 1000);  // 1ms SysTick (100 ms sayımı için)
     NVIC_SetPriority(SysTick_IRQn, 0U);
@@ -271,7 +272,7 @@ void drvInitMcu(void (*_McFuncFastLoop)(int32_t MxIndex),
 	PWMBase->FSTS = (PWMBase->FSTS & ~PWM_FSTS_FFLAG_MASK) | PWM_FSTS_FFLAG(0xF);
     /* Global ISR enable */
     //EnableGlobalIRQ(ui32PrimaskReg);
-	__enable_irq();
+	//__enable_irq(); //Eduardo: Keep disabled. It will be enabled after full initialization
 
     if(_McFuncFastLoop != NULL)
     	drvHighFreqHandlerMx = _McFuncFastLoop;
@@ -855,7 +856,10 @@ void GPIO0_IRQHandler(void)  //110us
 {
 	GPIO_GpioClearInterruptFlags(PIN_ZC_IN_GPIO, PIN_ZC_IN_PIN_MASK);
 
-	appValveControl(&appDw);
+	if(appDw.v.funcInitReady == true)
+	{
+		appValveControl(&appDw);
+	}
 }
 
 void shortCircuitControl(void)
@@ -1064,8 +1068,14 @@ void SysTick_Handler(void) //15us
         mcv_tx.txReady = true;
     }
 
-    appTransTimer(&appDw);
-    appDiverterControl(&appDw);
+	//Run them only if function pointers are properly initialized
+	if(appDw.v.funcInitReady == true)
+	{
+		appTransTimer(&appDw);
+		appDiverterControl(&appDw);
+		appFaultControl(&appDw);
+	}
+
     if(appDw.v.activeState == CIRCULATION)
     {
     	ipmTemperature_M1 = drvGetTempIPM_M1();
@@ -1079,7 +1089,6 @@ void SysTick_Handler(void) //15us
 
 
     }
-    appFaultControl(&appDw);
 /*
     end = DWT->CYCCNT;
     cycles = end - start_;

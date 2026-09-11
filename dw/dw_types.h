@@ -308,6 +308,7 @@ typedef struct{
 	volatile app_bool_t appFaultFlag;
 	volatile app_bool_t drainWindowFlag;
 	volatile app_bool_t drainOverRunFlag;
+	volatile app_bool_t funcInitReady;
 } appDwVar_t;	// variables for Dw application
 
 typedef struct{
