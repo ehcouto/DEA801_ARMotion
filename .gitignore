@@ -2,3 +2,7 @@
 .settings/org.eclipse.core.resources.prefs
 /Debug/
 *.launch
+/COPYING-BSD-3.txt
+/Framework_DAE802.pmpx
+/LICENSE.txt
+/SW-Content-Register.txt
