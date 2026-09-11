@@ -66,6 +66,7 @@ typedef struct
 	volatile app_uint16_t torqueVal[4];
 	volatile app_uint16_t packedVersion;
 	volatile app_uint8_t resultHHPTest;
+	volatile app_uint16_t ac_mains_volt;
 
 }mcv_tx_uart;
 

@@ -203,8 +203,11 @@ void appUARTHandler(appDw_t* p_appDw)
 			rxIdxAcu = 0;
 		txBuffer[21] = rxIdxAcu;
 
+		txBuffer[22] = mcv_tx.ac_mains_volt & 0xFF;
+		txBuffer[23] = mcv_tx.ac_mains_volt >> 8;
+
 		mcv_tx.CRCTx = appCalcCRC(txBuffer, (TX_BUFFER_SIZE-1)*sizeof(uint8_t));
-		txBuffer[22] = mcv_tx.CRCTx;
+		txBuffer[24] = mcv_tx.CRCTx;
 
 		txIndex = 0;
 		LPUART_EnableInterrupts(LPUART4, kLPUART_TxDataRegEmptyInterruptEnable);

@@ -69,7 +69,7 @@ typedef unsigned char sys_t;
 
 #define VERSION_MAJOR 	  						(uint8_t)(1U)
 #define VERSION_MINOR 	  						(uint8_t)(25U)
-#define VERSION_BUGFIX 	  						(uint8_t)(0U)
+#define VERSION_BUGFIX 	  						(uint8_t)(60U)
 
 #define DRAIN_TYPE_BIT_FIELD 					(0x0U)
 #define CIRC_TYPE_BIT_FIELD 					(0x2U)

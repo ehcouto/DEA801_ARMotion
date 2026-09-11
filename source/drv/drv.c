@@ -27,6 +27,16 @@ uint8_t drvMotorPhase_M1;
 #define NORMAL       0U
 #define REVERSED     1U
 
+uint16_t drv_volt_mean;
+uint16_t drv_volt_max_temp;
+uint16_t drv_volt_min_temp;
+uint16_t drv_volt_cnt;
+
+#define DC_BUS_VOLT_CNT           1000   //1000ms @ 1khz
+#define DC_BUS_VOLT_VDROP_CMP     6.5f  //Volts
+#define DC_BUS_VOLT_SQRT2_INV     0.70710678118654752440f  // 1.0/sqrt(2)
+
+void drvACMainVoltage(void);
 
 /*******************************************************************************
  * Variables
@@ -294,6 +304,11 @@ void drvInitMcu(void (*_McFuncFastLoop)(int32_t MxIndex),
 	}
 
 	drvMotorPhase_M1 = NORMAL;
+	
+	drv_volt_cnt = 0;
+	drv_volt_mean = 0;
+	drv_volt_max_temp = 0;
+	drv_volt_min_temp = 65535;
 }
 
 
@@ -1058,6 +1073,7 @@ void SysTick_Handler(void) //15us
     DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
     start_ = DWT->CYCCNT;
 */
+	drvACMainVoltage();
 	appHeaterTimers(&appDw);
 
     if(!mcv_tx.txReady)
@@ -1195,4 +1211,56 @@ void drvUart_Reset(void)
 	Rx_Data_In = 0;
 	memset(rxBuffer,0,sizeof(rxBuffer));
 	memset(txBuffer,0,sizeof(txBuffer));
+}
+
+
+
+
+
+void drvACMainVoltage(void)
+{
+	uint16_t dc_bus;
+
+//	/* ##### AC Main Voltage Estimation ##### */
+//	if ((mcv_rx.pilotValves & CIRCULATION_COMMAND_BITMASK)  ||
+//		(mcv_rx.pilotValves & DRAIN_COMMAND_BITMASK))
+//	{
+//		//Do nothing.. Just keep last ac voltage rms calculation and reset data
+//		drv_volt_cnt = 0;
+//		drv_volt_mean = 0;
+//		drv_volt_max_temp = 0;
+//		drv_volt_min_temp = 65535;
+//	}
+//	else
+	{
+		dc_bus = (uint16_t)drvGetDcBusVoltage();
+
+		drv_volt_cnt++;
+		if(drv_volt_cnt < DC_BUS_VOLT_CNT)
+		{
+			/* Get Max. Peak */
+			if(drv_volt_max_temp < dc_bus)
+			{
+				drv_volt_max_temp = dc_bus;
+			}
+
+			/* Get Min. Peak */
+			if(drv_volt_min_temp > dc_bus)
+			{
+				drv_volt_min_temp = dc_bus;
+			}
+		}
+		else
+		{
+			/* Calculate AC Voltage */
+			drv_volt_mean = (uint16_t)((drv_volt_max_temp + drv_volt_min_temp)>>1);
+			mcv_tx.ac_mains_volt = (app_uint16_t)((float)drv_volt_mean * DC_BUS_VOLT_SQRT2_INV + DC_BUS_VOLT_VDROP_CMP);
+
+			/* Reset Variables */
+			drv_volt_mean = 0;
+			drv_volt_max_temp = 0;
+			drv_volt_min_temp = 65535;
+			drv_volt_cnt = 0;
+		}
+	}
 }

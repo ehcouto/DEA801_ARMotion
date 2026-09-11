@@ -24,7 +24,7 @@
 #define VOLTAGE_AMP_3V3				 0.5f
 
 #define RX_BUFFER_SIZE 12
-#define TX_BUFFER_SIZE 23
+#define TX_BUFFER_SIZE 25
 
 
 #define NULL        ((void *)0)
