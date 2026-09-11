@@ -71,6 +71,8 @@ void appDwInit(void)
 	appDwFunc.appPwmDisable_M1 = brdPwmDisable_M1;
 	appDwFunc.appPwmDisable_M2 = brdPwmDisable_M2;
 
+	appDw.v.funcInitReady = true;
+
 	appUARTInit();
 	appMotorInit(&appDw);
 	appDiverterInit(&appDw);
@@ -80,9 +82,11 @@ void appDwInit(void)
 	appDoorSwitchCheckInit(&appDw);
 	appRelaysCheckInit(&appDw);
 
-
 	appResetAllFaultCounters(&appDw);
 	appResetErrorCountersFlags(&appDw);
+
+	InitGpioInt();
+
 }
 
 void appResetAllFaultCounters(appDw_t* p_appDw)

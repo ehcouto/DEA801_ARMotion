@@ -135,7 +135,10 @@ void appTransMotor(appDw_t* p_appDw)
 	else if(!p_appDw->v.transFlag && p_appDw->v.refSpeedCirc && !p_appDw->v.refSpeedDrain)
 	{
 		p_appDw->v.activeState = CIRCULATION;
-		appDwFunc.appDwPumpReset();
+		if(appDw.v.funcInitReady == true)
+		{
+			appDwFunc.appDwPumpReset();
+		}
 		if(p_appDw->v.transRelFlag)
 		{
 			refSpeed_M0.mc_sprefmec = 0;
@@ -151,7 +154,10 @@ void appTransMotor(appDw_t* p_appDw)
 	else if(!p_appDw->v.transFlag && !p_appDw->v.refSpeedCirc && p_appDw->v.refSpeedDrain)
 	{
 		p_appDw->v.activeState = DRAIN;
-		appDwFunc.appDwPumpSet();
+		if(appDw.v.funcInitReady == true)
+		{
+			appDwFunc.appDwPumpSet();
+		}
 		if(p_appDw->v.transRelFlag || (p_appDw->v.drainReadyFlag == APP_FALSE))
 		{
 			refSpeed_M0.mc_sprefmec = 0;
